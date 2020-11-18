@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "157074568890",
+    "firebase_url": "https://simplexgenius-1428d.firebaseio.com",
+    "project_id": "simplexgenius-1428d",
+    "storage_bucket": "simplexgenius-1428d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:157074568890:android:83299184e7e362f1c6f483",
+        "android_client_info": {
+          "package_name": "com.softdeveloper.duncan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "157074568890-h1dshnpkfqovajq3qi04jpnk27svrl1h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.softdeveloper.duncan",
+            "certificate_hash": "4a7aea3fcd1d67d42ebae4988c98f12c42bc4f57"
+          }
+        },
+        {
+          "client_id": "157074568890-9gg9eqa8p4u1ehloa05cn027qi0j8ef5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9Mt0mCnwws7xadI9CAaihalCmRjTHm6c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "157074568890-9gg9eqa8p4u1ehloa05cn027qi0j8ef5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

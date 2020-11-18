@@ -33,7 +33,7 @@ dependencies:
   cached_network_image: ^2.3.0
   image_picker: ^0.6.6+1
   flutter_downloader: ^1.4.4
-  # permission_handler: ^5.0.0+hotfix.5
+  permission_handler: ^5.0.0+hotfix.5
   file_picker: ^1.9.0+1
   mime: ^0.9.6+3
   path_provider: ^1.6.9
@@ -48,9 +48,7 @@ dependencies:
   # flutter_webview_plugin: ^0.3.11
   flutter_app_badger: ^1.1.2
   preview: ^0.0.8
-  flutter_inappwebview: ^4.0.0+4
-
-  # flutter_plugin_pdf_viewer: ^1.0.7
+# flutter_plugin_pdf_viewer: ^1.0.7
 
 dev_dependencies:
   flutter_test:

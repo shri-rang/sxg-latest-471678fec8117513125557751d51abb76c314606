@@ -37,7 +37,6 @@ class _StudentCircularListState extends State<StudentCircularList> {
 
   @override
   Widget build(BuildContext context) {
-  
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
@@ -47,7 +46,9 @@ class _StudentCircularListState extends State<StudentCircularList> {
               ? "HomeWork"
               : widget.uitype == UIType.Circualr
                   ? "Circular"
-                  : widget.uitype == UIType.DairyNotes ? "DiaryNotes" : "",
+                  : widget.uitype == UIType.DairyNotes
+                      ? "DiaryNotes"
+                      : "",
           style: TextStyle(color: blackColor),
         ),
         iconTheme: IconThemeData(color: blackColor),
@@ -55,11 +56,18 @@ class _StudentCircularListState extends State<StudentCircularList> {
         elevation: 0.0,
       ),
       body: FutureBuilderWidget<List<CircularStudentModel>>(
-          future:
-              //  widget.teacherId != null
-              //     ?
-              _netWorkAPiRepository.getHWCricularDNoteListByDataModel(
-                  widget.id, widget.isTeacher,
+          future: widget.isTeacher == true
+              ? _netWorkAPiRepository.getHWCricularDNoteListByDataModel(
+                  // classesid: widget.studentInfoModel.classesID,
+                  // sectionid: widget.studentInfoModel.sectionID,
+                  id: widget.id,
+                  isTeacher: widget.isTeacher,
+                  uitype: widget.uitype)
+              : _netWorkAPiRepository.getHWCricularDNoteListByDataModel(
+                  classesid: widget.studentInfoModel.classesID,
+                  sectionid: widget.studentInfoModel.sectionID,
+                  id: widget.id,
+                  isTeacher: widget.isTeacher,
                   uitype: widget.uitype),
           // : _netWorkAPiRepository.getStudentCircularDataModel(
           //     widget.studentInfoModel.studenId),
@@ -136,6 +144,7 @@ class _StudentCircularListState extends State<StudentCircularList> {
       //for homework and diarynotes
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => StudentCircularDetails(
+                studentInfoModel: widget.studentInfoModel,
                 messageId: circularStudentModel.messageId,
                 readStatus: circularStudentModel.readStatus,
                 viewType: widget.uitype,
@@ -146,6 +155,7 @@ class _StudentCircularListState extends State<StudentCircularList> {
       //for circular
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => StudentCircularDetails(
+                studentInfoModel: widget.studentInfoModel,
                 messageId: circularStudentModel.messageId,
                 readStatus: circularStudentModel.readStatus,
                 viewType: widget.uitype,

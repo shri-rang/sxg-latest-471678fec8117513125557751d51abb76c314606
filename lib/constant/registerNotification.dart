@@ -33,14 +33,23 @@ void registerNotification() {
   });
 }
 
-updateDeviceToken(
-    {@required currentUserType, @required phoneNumber, @required context}) {
+updateDeviceToken({
+  @required currentUserType,
+  @required phoneNumber,
+  @required context,
+}) {
   firebaseMessaging.getToken().then((token) {
-    //print('token: $token');
+    print('token: $token');
     networkApiClient.updateToken(
-        number: phoneNumber,
-        token: token,
-        type: currentUserType == "Teacher" ? "teachers" : "parents");
+      number: phoneNumber,
+      token: token,
+      type: currentUserType == "Teacher"
+          ? "teachers"
+          : currentUserType == "Student"
+              ? "studentID"
+              : "parents",
+      // studentId: studentId, type me studentID ab karo else to lagaoo kaha
+    );
   }).catchError((err) {
     print(err.message.toString());
   });

@@ -10,17 +10,16 @@ class InboxInfo extends StatefulWidget {
   final String uid;
   final bool isHomeWork;
 
-  const InboxInfo({Key key, this.uid,this.isHomeWork}) : super(key: key);
+  const InboxInfo({Key key, this.uid, this.isHomeWork}) : super(key: key);
   @override
   _InboxInfoState createState() => _InboxInfoState();
 }
 
 class _InboxInfoState extends State<InboxInfo> {
-
   @override
   void initState() {
     var data = Provider.of<InBoxProvider>(context, listen: false);
-    data.getInbox(widget.uid,widget.isHomeWork);
+    data.getInbox(widget.uid, widget.isHomeWork);
     super.initState();
   }
 
@@ -58,22 +57,24 @@ class _InboxInfoState extends State<InboxInfo> {
                                     data.from +
                                     "\tTo:\t" +
                                     data.to),
-                                    Divider(),
-                               
+                                Divider(),
                                 Text("Title:\t" + data.title),
                                 SizedBox(
                                   height: 4.0,
                                 ),
                                 Text("Message:\t" + data.replyMsg),
-                                 SizedBox(
+                                SizedBox(
                                   height: 4.0,
                                 ),
                                 Align(
                                   alignment: Alignment.bottomRight,
-                                                                  child: Text( data.createTime,style: TextStyle(
-                                    color: greyColor,fontSize: 11.0,
-
-                                  ),),
+                                  child: Text(
+                                    data.createTime,
+                                    style: TextStyle(
+                                      color: greyColor,
+                                      fontSize: 11.0,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -81,9 +82,12 @@ class _InboxInfoState extends State<InboxInfo> {
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => StudentCircularDetails(
+                                      // studentInfoModel: widget.,
                                       messageId: data.messageID,
                                       readStatus: data.status,
-                                      viewType:widget.isHomeWork? UIType.HomeWOrk:UIType.DairyNotes,
+                                      viewType: widget.isHomeWork
+                                          ? UIType.HomeWOrk
+                                          : UIType.DairyNotes,
                                       isTeacher: true,
                                       uid: widget.uid,
                                     )));

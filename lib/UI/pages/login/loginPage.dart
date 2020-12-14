@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                           margin: EdgeInsets.symmetric(vertical: 10.0),
                           child: Text(
-                            "Duncun Acadamy",
+                            "Edwards English School",
                             style: TextStyle(
                                 color: whiteColor,
                                 fontSize: 25.0,

@@ -21,7 +21,9 @@ class ChooseOptionByTeacher extends StatelessWidget {
               ? "HomeWork"
               : uitype == UIType.DairyNotes
                   ? "DiaryNotes"
-                  : uitype == UIType.Circualr ? "Circular" : "",
+                  : uitype == UIType.Circualr
+                      ? "Circular"
+                      : "",
           style: TextStyle(color: blackColor),
         ),
         iconTheme: IconThemeData(color: blackColor),
@@ -60,27 +62,26 @@ class ChooseOptionByTeacher extends StatelessWidget {
                     builder: (_) => StudentCircularList(
                           id: teacherId,
                           isTeacher: true,
-                          uitype:uitype,
+                          uitype: uitype,
                         )));
               },
             ),
             SizedBox(
               height: 20.0,
             ),
-         Visibility(
-           visible:   uitype!=UIType.Circualr ,
-                    child: RaisedButtonWidget(
+            Visibility(
+              visible: uitype != UIType.Circualr,
+              child: RaisedButtonWidget(
                 title: "INBOX",
                 callback: () {
-                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => InboxInfo(
-                          uid: teacherId,
-                          isHomeWork: uitype==UIType.HomeWOrk ,
-                        )));
-
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => InboxInfo(
+                            uid: teacherId,
+                            isHomeWork: uitype == UIType.HomeWOrk,
+                          )));
                 },
               ),
-         )
+            )
           ],
         ),
       ),

@@ -25,17 +25,18 @@ class _AddMarksState extends State<AddMarks> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Marks'),
-      ),
-      body: WebView(
-        initialUrl: 'http://theduncanacademy.com/exam/add_marks',
-        // 'http://duncan.simplexgenius.in/new_student/monthly_report/$ids',
-        javascriptMode: JavascriptMode.unrestricted,
-        onWebViewCreated: (WebViewController webViewController) {
-          _controller.complete(webViewController);
-        },
-      ),
-    );
+        appBar: AppBar(
+          title: Text('Add Marks'),
+        ),
+        body: Container()
+        //  WebView(
+        //   initialUrl: 'http://theduncanacademy.com/exam/add_marks',
+        //   // 'http://duncan.simplexgenius.in/new_student/monthly_report/$ids',
+        //   javascriptMode: JavascriptMode.unrestricted,
+        //   onWebViewCreated: (WebViewController webViewController) {
+        //     _controller.complete(webViewController);
+        //   },
+        // ),
+        );
   }
 }

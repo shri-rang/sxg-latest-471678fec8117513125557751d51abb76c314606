@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:157074568890:android:83299184e7e362f1c6f483",
         "android_client_info": {
-          "package_name": "com.softdeveloper.duncan"
+          "package_name": "com.simplexgenius.edwardsenglishschool"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "157074568890-h1dshnpkfqovajq3qi04jpnk27svrl1h.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.softdeveloper.duncan",
+            "package_name": "com.simplexgenius.edwardsenglishschool",
             "certificate_hash": "4a7aea3fcd1d67d42ebae4988c98f12c42bc4f57"
           }
         },

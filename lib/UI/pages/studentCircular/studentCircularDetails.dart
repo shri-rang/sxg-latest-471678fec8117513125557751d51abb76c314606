@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_x_genius/UI/pages/allCategoriesofTeacher/chooseInboxSent.dart';
 import 'package:simple_x_genius/UI/pages/studentCircular/studentCircularDetailProvider.dart';
+import 'package:simple_x_genius/UI/pages/studentCircular/studentImageViewer.dart';
 import 'package:simple_x_genius/api/networkApi/nerWorkApiRepository.dart';
 import 'package:simple_x_genius/constant/colors.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -15,6 +16,9 @@ import 'package:simple_x_genius/model/circularStudenModel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:simple_x_genius/model/stuentInfoModel.dart';
+
 // import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 // import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
 
@@ -22,6 +26,7 @@ import 'package:filesize/filesize.dart';
 import 'package:preview/preview.dart';
 
 class StudentCircularDetails extends StatefulWidget {
+  final StudentInfoModel studentInfoModel;
   final String messageId;
   final viewType;
   final String readStatus;
@@ -31,6 +36,7 @@ class StudentCircularDetails extends StatefulWidget {
 
   const StudentCircularDetails(
       {Key key,
+      this.studentInfoModel,
       @required this.messageId,
       @required this.uid,
       @required this.isTeacher,
@@ -188,7 +194,7 @@ class _StudentCircularDetailsState extends State<StudentCircularDetails> {
                                                                     .replyMessages[
                                                                         index]
                                                                     .fileURL !=
-                                                                "https://zvb.fbs.mybluehostin.me/duncan/uploads/attach/"
+                                                                "https://edwardses.net/uploads/attach/"
                                                         ? Align(
                                                             alignment: Alignment
                                                                 .bottomRight,
@@ -302,15 +308,40 @@ class _StudentCircularDetailsState extends State<StudentCircularDetails> {
                                                 if (_controllerText
                                                         .text.length >
                                                     0) {
-                                                  await provider
-                                                      .setMessageReply(
+                                                  await
+                                                      //  widget.isTeacher == true
+                                                      //     ? provider
+                                                      //         .setMessageReply(
+                                                      //             messageId: provider
+                                                      //                 .sendMessage
+                                                      //                 .messageID,
+                                                      //             // studentId: widget
+                                                      //             //     .studentInfoModel
+                                                      //             //     .studenId,
+                                                      //             parentId: widget
+                                                      //                     .isTeacher
+                                                      //                 ? ""
+                                                      //                 : widget.uid,
+                                                      //             replyMessage:
+                                                      //                 _controllerText
+                                                      //                     .text,
+                                                      //             status: "0",
+                                                      //             upfile: null,
+                                                      //             title: provider
+                                                      //                 .sendMessage
+                                                      //                 .title)
+                                                      //     :
+                                                      provider.setMessageReply(
                                                           messageId: provider
                                                               .sendMessage
                                                               .messageID,
-                                                          parentId: widget
-                                                                  .isTeacher
-                                                              ? ""
-                                                              : widget.uid,
+                                                          // studentId: widget
+                                                          //     .studentInfoModel
+                                                          //     .studenId,
+                                                          parentId:
+                                                              widget.isTeacher
+                                                                  ? ""
+                                                                  : widget.uid,
                                                           replyMessage:
                                                               _controllerText
                                                                   .text,
@@ -355,25 +386,60 @@ class _StudentCircularDetailsState extends State<StudentCircularDetails> {
                                                   if (sizeMb > 20) {
                                                     return _showDialog();
                                                   } else {
-                                                    await provider.setMessageReply(
-                                                        messageId: provider
-                                                            .sendMessage
-                                                            .messageID,
-                                                        parentId:
-                                                            widget.isTeacher
-                                                                ? ""
-                                                                : widget.uid,
-                                                        replyMessage:
-                                                            _controllerText
-                                                                        .text ==
-                                                                    ""
-                                                                ? "\t \t"
-                                                                : _controllerText
-                                                                    .text,
-                                                        status: "0",
-                                                        title: provider
-                                                            .sendMessage.title,
-                                                        upfile: somefile);
+                                                    await
+                                                        //  widget.isTeacher ==
+                                                        //         true
+                                                        //     ? provider
+                                                        //         .setMessageReply(
+                                                        //             messageId: provider
+                                                        //                 .sendMessage
+                                                        //                 .messageID,
+                                                        //             // studentId: widget
+                                                        //             //     .studentInfoModel
+                                                        //             //     .studenId,
+                                                        //             parentId:
+                                                        //                 // widget.circularStudentModel.
+                                                        //                 widget.isTeacher
+                                                        //                     ? ""
+                                                        //                     : widget
+                                                        //                         .uid,
+                                                        //             replyMessage: _controllerText.text ==
+                                                        //                     ""
+                                                        //                 ? "\t \t"
+                                                        //                 : _controllerText
+                                                        //                     .text,
+                                                        //             status: "0",
+                                                        //             title: provider
+                                                        //                 .sendMessage
+                                                        //                 .title,
+                                                        //             upfile:
+                                                        //                 somefile)
+                                                        //     :
+                                                        provider
+                                                            .setMessageReply(
+                                                                messageId: provider
+                                                                    .sendMessage
+                                                                    .messageID,
+                                                                // studentId: widget
+                                                                //     .studentInfoModel
+                                                                //     .studenId,
+                                                                parentId:
+                                                                    // widget.circularStudentModel.
+                                                                    widget.isTeacher
+                                                                        ? ""
+                                                                        : widget
+                                                                            .uid,
+                                                                replyMessage:
+                                                                    _controllerText.text == ""
+                                                                        ? "\t \t"
+                                                                        : _controllerText
+                                                                            .text,
+                                                                status: "0",
+                                                                title: provider
+                                                                    .sendMessage
+                                                                    .title,
+                                                                upfile:
+                                                                    somefile);
                                                     _controllerText.clear();
 
                                                     provider
@@ -462,13 +528,39 @@ class _StudentCircularDetailsState extends State<StudentCircularDetails> {
 
               // ),
               Container(
-                  height: 150,
-                  width: 400,
-                  child: Image.network(
-                    '$attachFileName',
-                    height: 150,
-                    width: 400,
-                  )),
+                  // height: 50,
+                  // width: 100,
+                  child: RaisedButton(
+                      color: Colors.blue,
+                      child: Text(
+                        'View Image',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => StudentImageViewer(
+                            attachment: attachFileName,
+                          ),
+                        ));
+                      })),
+              // RaisedButton(
+              //   onPressed: () {
+              //     var fileType = attachFileName.split('.');
+              //     print('file type ${fileType}');
+              //     print(fileType.elementAt(2));
+              //     var fileImgVsPdf = fileType.elementAt(2);
+              //   },
+              // ),
+              //   PhotoView(
+              //     imageProvider: NetworkImage("$attachFileName"),
+              //   ),
+              // ),
+
+              // Image.network(
+              //   '$attachFileName',
+              //   height: 150,
+              //   width: 400,
+              // )),
               // Text("Attachment: "),
               SizedBox(
                 height: 8.0,
@@ -476,8 +568,7 @@ class _StudentCircularDetailsState extends State<StudentCircularDetails> {
 
               attachFileName.isNotEmpty &&
                       attachFileName != "" &&
-                      attachFileName !=
-                          "https://zvb.fbs.mybluehostin.me/duncan/uploads/attach/"
+                      attachFileName != "https://edwardses.net/uploads/attach/"
                   ? Container(
                       decoration:
                           BoxDecoration(border: Border.all(color: blackColor)),

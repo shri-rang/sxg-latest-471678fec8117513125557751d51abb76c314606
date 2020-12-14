@@ -12,6 +12,7 @@ import 'UI/pages/studentCircular/studentCircularDetailProvider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'api/userTokenProvider.dart';
 import 'package:in_app_update/in_app_update.dart';
+import 'package:simple_x_genius/UI/pages/allcategorisofStudent/assignment/uploadassignment.dart';
 
 void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +32,9 @@ void main() async {
       ChangeNotifierProvider(
         create: (_) => StudentCircularDetailsProvider(),
       ),
+      // ChangeNotifierProvider(
+      //   create: (_) => StudentUploadProvider(),
+      // ),
       ChangeNotifierProvider(
         create: (_) => InBoxProvider(),
       ),
@@ -50,7 +54,7 @@ class MyApp extends StatelessWidget {
     //  var tokenRepo = Provider.of<UserTokenProvider>(context);
 
     return MaterialApp(
-        title: 'DUNCUN ACADAMY',
+        title: 'Edwards English School',
         theme: ThemeData(
           primaryColor: defaultAppBlueColor,
         ),

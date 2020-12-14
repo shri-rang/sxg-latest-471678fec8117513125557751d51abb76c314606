@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.softdeveloper.duncan">
+    package="com.simplexgenius.edwardsenglishschool">
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide
@@ -12,12 +12,13 @@
   <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label=" DUNCUN ACADEMY"
+        android:label="Edwards English School"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@mipmap/ic_launcher" />
+            
 
       <provider
     android:name="vn.hunghd.flutterdownloader.DownloadedFileProvider"

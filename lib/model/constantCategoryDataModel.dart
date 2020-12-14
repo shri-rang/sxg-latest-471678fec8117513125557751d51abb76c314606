@@ -4,11 +4,13 @@ class CategoryDataSource {
   List<String> categoryName = [
     "Student Details",
     "Parent Profile",
-    "E-learning",
+    "Online Classes",
     "Attendace",
     "Homework",
     "Circular",
     "Diary Notes",
+    "Assignment",
+    "Live Class",
     // "Notice",
     // "Newsletter",
     "Gallery",
@@ -16,7 +18,8 @@ class CategoryDataSource {
     "Report Card",
     "Bus Details",
     "Change Password",
-    "Customer Care"
+    "Customer Care",
+    "Contact Us"
   ];
   List<IconData> iconSrc = [
     Icons.account_circle,
@@ -26,6 +29,8 @@ class CategoryDataSource {
     Icons.edit,
     Icons.pageview,
     Icons.note,
+    Icons.assignment,
+    Icons.ondemand_video,
     // Icons.notifications,
     // Icons.line_weight,
     Icons.image,
@@ -33,23 +38,27 @@ class CategoryDataSource {
     Icons.receipt,
     Icons.directions_bus,
     Icons.phonelink_lock,
-    Icons.call
+    Icons.call,
+    Icons.contact_phone
   ];
 
   List<String> categoryNameForTeacher = [
     "Teacher's Profile",
     "Class Attd",
-    "E-learning",
+    "Online Classes",
     "Homework",
     "Circular",
     "Diary Notes",
+    "Assignment",
     "Add Marks",
+    "Live Class",
+    // "Live Class"
     "Salary Slip",
     "Time Table",
     "Change Password",
     "Customer Care",
-    "Gallery"
-
+    "Gallery",
+    // "Contact Us"
   ];
 
   List<IconData> iconSrcForTeacher = [
@@ -59,11 +68,14 @@ class CategoryDataSource {
     Icons.edit,
     Icons.pageview,
     Icons.note,
+    Icons.assignment_ind,
     Icons.my_library_books,
+    Icons.ondemand_video,
     Icons.receipt_long_outlined,
     Icons.timelapse,
-      Icons.phonelink_lock,
-      Icons.call,
-      Icons.image
+    Icons.phonelink_lock,
+    Icons.call,
+    Icons.image,
+    // Icons.contact_phone
   ];
 }

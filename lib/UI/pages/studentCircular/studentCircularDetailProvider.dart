@@ -4,6 +4,7 @@ import 'package:simple_x_genius/api/networkApi/netWorkApi.dart';
 import 'package:simple_x_genius/model/homeWorkDetailsModel.dart';
 
 import 'dart:io' as Z;
+
 class StudentCircularDetailsProvider extends ChangeNotifier {
   bool _loadingReply = false;
   bool _sentReplyLoading = false;
@@ -27,6 +28,7 @@ class StudentCircularDetailsProvider extends ChangeNotifier {
       String title,
       String replyMessage,
       String status,
+      String studentId,
       String parentId,
       Z.File upfile}) async {
     sentReplyLoading = true;
@@ -35,6 +37,7 @@ class StudentCircularDetailsProvider extends ChangeNotifier {
     await _networkApiClient.setReplyMessage(
         messageId: messageId,
         parentId: parentId,
+        studentId: studentId,
         replyMessage: replyMessage,
         title: title,
         status: status,

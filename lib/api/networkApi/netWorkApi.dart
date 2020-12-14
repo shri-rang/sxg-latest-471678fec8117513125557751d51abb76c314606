@@ -8,7 +8,7 @@ import 'package:simple_x_genius/model/feesInvoiceInfoModel.dart';
 
 class NetworkApiClient {
   static String baseLoginUrl =
-      "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/apihost";
+      "https://www.edwardses.net/edwardswebservice/apihost";
   Dio _dio;
   NetworkApiClient() {
     BaseOptions options =
@@ -16,9 +16,12 @@ class NetworkApiClient {
     _dio = Dio(options);
     // _dio.interceptors.add(ApiInterceptor());
   }
+  // https://www.edwardses.net/edwardswebservice
+  //https://www.edwardses.net/edwardswebservice
+  //https://www.edwardses.net/apihost
 
   Future loginUser(String userName, String userPass) async {
-    String login = "http://theduncanacademy.com/apihost";
+    String login = "https://www.edwardses.net/apihost";
     final url = "$login/parentlogin";
     try {
       // var response=  await   http.post(url);
@@ -40,7 +43,7 @@ class NetworkApiClient {
 
   getStudentAttendance(String studenId, String monthYear) async {
     final url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_attendance.php?studentId=$studenId&month=$monthYear";
+        "https://www.edwardses.net/edwardswebservice/Get_attendance.php?studentId=$studenId&month=$monthYear";
     try {
       // var response=  await   http.post(url);
 
@@ -56,7 +59,7 @@ class NetworkApiClient {
 
   Future getStuentDataFromserver(String parentNumber) async {
     final url =
-        'https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_childbyparentnumber.php?parent=$parentNumber';
+        'https://www.edwardses.net/edwardswebservice/Get_childbyparentnumber.php?parent=$parentNumber';
 
     try {
       var response = await _dio.post(url);
@@ -69,7 +72,7 @@ class NetworkApiClient {
 
   Future getCircularofAStudent(String studentId) async {
     final url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_circular.php?studentID=$studentId";
+        "https://www.edwardses.net/edwardswebservice/Get_circular.php?studentID=$studentId";
     try {
       var response = await _dio.post(url);
 
@@ -79,20 +82,24 @@ class NetworkApiClient {
     }
   }
 
-  Future getHWCircularDNoteFromServer(String id, bool isTeacher,
-      {@required UIType uitype}) async {
+  Future getHWCircularDNoteFromServer(
+      {String id,
+      String classesid,
+      String sectionid,
+      bool isTeacher,
+      @required UIType uitype}) async {
     final url = uitype == UIType.HomeWOrk
         ? isTeacher
-            ? "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_tlisthomework.php?uid=$id" //teacher homework
-            : "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_homework.php?studentID=$id" //student homework
+            ? "https://www.edwardses.net/edwardswebservice/Get_tlisthomework.php?uid=$id" //teacher homework
+            : "https://www.edwardses.net/edwardswebservice/Get_homework.php?studentID=$id&classesid=$classesid&sectionid=$sectionid" //student homework
         : uitype == UIType.Circualr
             ? isTeacher
-                ? "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_tcircular.php?uid=$id" //teacher circualr
-                : "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_circular.php?studentID=$id" //student circular
+                ? "https://www.edwardses.net/edwardswebservice/Get_tcircular.php?uid=$id" //teacher circualr
+                : "https://www.edwardses.net/edwardswebservice/Get_circular.php?studentID=$id" //student circular
             : uitype == UIType.DairyNotes
                 ? isTeacher
-                    ? "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/sxgwebservice/Get_tlistdiarynotes.php?uid=$id" //teacher dairy note
-                    : "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_diarynotes.php?studentID=$id" //student dairy note
+                    ? "https://www.edwardses.net/edwardswebservice/sxgwebservice/Get_tlistdiarynotes.php?uid=$id" //teacher dairy note
+                    : "https://www.edwardses.net/edwardswebservice/Get_diarynotes.php?studentID=$id" //student dairy note
                 : "";
 
     try {
@@ -106,7 +113,7 @@ class NetworkApiClient {
 
   Future getParentInfoFromServer(String parentId) async {
     final url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_parentslist.php?ParentID=$parentId";
+        "https://www.edwardses.net/edwardswebservice/Get_parentslist.php?ParentID=$parentId";
     try {
       var response = await _dio.post(url);
 
@@ -118,7 +125,7 @@ class NetworkApiClient {
 
   Future getTeacherInfoFromServer(String teacherNumber) async {
     final url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_teacherlist.php?teachernumber=$teacherNumber";
+        "https://www.edwardses.net/edwardswebservice/Get_teacherlist.php?teachernumber=$teacherNumber";
 
     try {
       var response = await _dio.get(
@@ -132,8 +139,7 @@ class NetworkApiClient {
   }
 
   Future getClassFromServer() async {
-    final url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_classlist.php";
+    final url = "https://www.edwardses.net/edwardswebservice/Get_classlist.php";
 
     try {
       var response = await _dio.get(
@@ -148,7 +154,7 @@ class NetworkApiClient {
 
   Future getSectionFromServer(String classId) async {
     final url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_sectionlist.php?classid=$classId";
+        "https://www.edwardses.net/edwardswebservice/Get_sectionlist.php?classid=$classId";
 
     try {
       var response = await _dio.get(
@@ -166,7 +172,7 @@ class NetworkApiClient {
   Future getStudentListSectionWiseFromServer(
       String classId, String sectionId) async {
     final url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_studentclasswise.php?classid=$classId&ssectionid=$sectionId";
+        "https://www.edwardses.net/edwardswebservice/Get_studentclasswise.php?classid=$classId&ssectionid=$sectionId";
 
     try {
       var response = await _dio.get(
@@ -185,7 +191,7 @@ class NetworkApiClient {
       String attendance,
       String date}) async {
     final url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Post_updateAttendance.php";
+        "https://www.edwardses.net/edwardswebservice/Post_updateAttendance.php";
 
     try {
       var response = await _dio.post(url, data: {
@@ -211,7 +217,7 @@ class NetworkApiClient {
       String attendance,
       String date}) async {
     final url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Post_updateAttendance.php";
+        "https://www.edwardses.net/edwardswebservice/Post_updateAttendance.php";
 
     try {
       var response = await _dio.post(url, data: {
@@ -240,7 +246,64 @@ class NetworkApiClient {
       String fileExtension,
       String message}) async {
     final String url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Post_sendhomework.php";
+        "https://www.edwardses.net/edwardswebservice/Post_sendhomework.php";
+
+    FormData formData = FormData();
+
+    if (attachement != null) {
+      formData.files.add(MapEntry(
+          "uploaded_file",
+          await MultipartFile.fromFile(attachement.path,
+              filename: fileName,
+              contentType: MediaType(
+                  fileExtension == "pdf" ? 'application' : 'image',
+                  fileExtension))));
+    }
+
+    formData.fields.add(
+      MapEntry("classid", classId),
+    );
+    formData.fields.add(
+      MapEntry("sectionid", sectionId),
+    );
+    formData.fields.add(
+      MapEntry("subject", subject),
+    );
+
+    formData.fields.add(
+      MapEntry("message", message),
+    );
+    formData.fields.add(
+      MapEntry("teacherid", teacherId),
+    );
+    if (attachement != null) {
+      formData.fields.add(
+        MapEntry("attachment", fileExtension == "pdf" ? "0" : "1"),
+      );
+    }
+    try {
+      var response = await _dio.post(url,
+          data: formData,
+          options: Options(headers: {"Content-Type": "multipart/form-data"}));
+      //  print(response.data);
+
+      return response.data;
+    } on DioError catch (e) {
+      throw e.error;
+    }
+  }
+
+  sendAssignmentDataToServer(
+      {File attachement,
+      String classId,
+      String sectionId,
+      String subject,
+      String fileName,
+      String teacherId,
+      String fileExtension,
+      String message}) async {
+    final String url =
+        "https://www.edwardses.net/edwardswebservice/Post_sendassignment.php";
 
     FormData formData = FormData();
 
@@ -298,7 +361,7 @@ class NetworkApiClient {
       String fileExtension,
       String message}) async {
     final String url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Post_senddiarynotes.php";
+        "https://www.edwardses.net/edwardswebservice/Post_senddiarynotes.php";
 
     FormData formData = FormData();
 
@@ -359,7 +422,7 @@ class NetworkApiClient {
 
   Future updateReadStatusToServer(String messageId) async {
     final String url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Post_update.php";
+        "https://www.edwardses.net/edwardswebservice/Post_update.php";
     try {
       var response = await _dio.post(
         url,
@@ -378,7 +441,7 @@ class NetworkApiClient {
   getallStudentOfaSectionFromServer(
       {String classid, String sectionId, String name}) async {
     final String url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_studentclasswisename.php";
+        "https://www.edwardses.net/edwardswebservice/Get_studentclasswisename.php";
     try {
       // var response=  await   http.post(url);
 
@@ -402,9 +465,9 @@ class NetworkApiClient {
 
   Future getReplyMesageFromServer(String messageId, UIType uiType) async {
     final url = uiType == UIType.DairyNotes
-        ? "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_tlistdiarynotesdetail.php"
+        ? "https://www.edwardses.net/edwardswebservice/Get_tlistdiarynotesdetail.php"
         : uiType == UIType.HomeWOrk
-            ? "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_tlisthomeworkdetail.php"
+            ? "https://www.edwardses.net/edwardswebservice/Get_tlisthomeworkdetail.php"
             : "";
 
     try {
@@ -418,9 +481,9 @@ class NetworkApiClient {
 
   Future getCircularDetailsFromServer(String messageId, UIType uiType) async {
     final url = uiType == UIType.DairyNotes
-        ? "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_tlistdiarynotesdetail.php"
+        ? "https://www.edwardses.net/edwardswebservice/Get_tlistdiarynotesdetail.php"
         : uiType == UIType.HomeWOrk
-            ? "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_tlisthomeworkdetail.php"
+            ? "https://www.edwardses.net/edwardswebservice/Get_tlisthomeworkdetail.php"
             : "";
 
     try {
@@ -439,15 +502,17 @@ class NetworkApiClient {
       String replyMessage,
       String status,
       String parentId,
+      String studentId,
       File uploadedFile}) async {
     final String url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Post_reply.php";
+        "https://www.edwardses.net/edwardswebservice/Post_reply.php";
     var request = http.MultipartRequest('POST', Uri.parse(url));
     request.fields["messageID"] = messageId;
     request.fields["title"] = title;
     request.fields["reply_msg"] = replyMessage;
     request.fields["status"] = status;
     request.fields["parentID"] = parentId;
+    // request.fields["studentID"] = studentId;
     if (uploadedFile != null)
       request.files.add(await http.MultipartFile.fromPath(
           "uploaded_file", uploadedFile.path));
@@ -463,7 +528,7 @@ class NetworkApiClient {
 
   Future getInboxMessages(String uid, bool isHomeWork) async {
     final String url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_tlistinbox.php";
+        "https://www.edwardses.net/edwardswebservice/Get_tlistinbox.php";
 
     try {
       var response = await _dio.get(url, queryParameters: {
@@ -478,7 +543,7 @@ class NetworkApiClient {
 
   Future getClassNameFromServer(String classId) async {
     final String url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_classlist.php";
+        "https://www.edwardses.net/edwardswebservice/Get_classlist.php";
     try {
       var response =
           await _dio.get(url, queryParameters: {'classesID': classId});
@@ -488,14 +553,23 @@ class NetworkApiClient {
     }
   }
 
-  updateToken({String token, String number, String type}) async {
+  updateToken({
+    String token,
+    String number,
+    String type,
+  }) async {
     final String url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Post_tokenupdate.php";
+        "https://www.edwardses.net/edwardswebservice/Post_tokenupdate.php";
     try {
       var response = await _dio.post(
         url,
         data: {
-          "SXG": {"id": token, "number": number, "type": type}
+          "SXG": {
+            "id": token,
+            "number": number,
+            "type": type,
+            // "studentId": studentId
+          }
         },
       );
       print(response.data);
@@ -503,14 +577,14 @@ class NetworkApiClient {
 
       return response.data;
     } on DioError catch (e) {
-      throw e.error;
+      print(e.error);
     }
   }
 
   getAllStudentAttendanceFromServer(
       {String classId, String secttionID, String month}) async {
     final String url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_studentattendance.php";
+        "https://www.edwardses.net/edwardswebservice/Get_studentattendance.php";
     try {
       var response = await _dio.get(url, queryParameters: {
         'classid': classId,
@@ -526,7 +600,7 @@ class NetworkApiClient {
   Future changePassWordApi(
       {String oldPassword, String newPassword, String phoneNumber}) async {
     final String url = "http://theduncanacademy.com/apihostt/change_password";
-    // "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/apihost/change_password";
+    // "https://www.edwardses.net/edwardswebservice/apihost/change_password";
     try {
       var response = await _dio.post(url, queryParameters: {
         'username': phoneNumber,
@@ -544,7 +618,7 @@ class NetworkApiClient {
   Future forgetPassWordApi(
       {String otp, String newPassword, String phoneNumber}) async {
     final String url = "http://theduncanacademy.com/apihost/forget_password";
-    // "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/apihost/forget_password";
+    // "https://www.edwardses.net/edwardswebservice/apihost/forget_password";
     try {
       var response = await _dio.post(url, queryParameters: {
         'username': phoneNumber,
@@ -561,7 +635,7 @@ class NetworkApiClient {
 
   Future forgetPassPhoneInputApi(String phoneNumber) async {
     final String url = "http://theduncanacademy.com/apihost/forget_password";
-    // "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/apihost/forget_password";
+    // "https://www.edwardses.net/edwardswebservice/apihost/forget_password";
 
     try {
       var response = await _dio.post(url, queryParameters: {
@@ -576,7 +650,7 @@ class NetworkApiClient {
 
   getStudentSectionApi(String sectionID) async {
     final url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_sectionlist.php?sectionID=$sectionID";
+        "https://www.edwardses.net/edwardswebservice/Get_sectionlist.php?sectionID=$sectionID";
 
     try {
       var response = await _dio.get(
@@ -589,9 +663,265 @@ class NetworkApiClient {
     }
   }
 
+  Future viewAssignment(String teacherId) async {
+    print(teacherId);
+    final url =
+        "https://www.edwardses.net/edwardswebservice/Get_assignmentall.php";
+
+    try {
+      var response = await _dio.post(url, queryParameters: {
+        'teacherID': teacherId,
+      });
+      print(response);
+      return response.data;
+    } on DioError {
+      return false;
+    }
+    // try {
+    //   var response = await _dio.post(
+    //     url,
+    //   );
+    //   print(response);
+    //   return response.data;
+    // } on DioError {
+    //   return "";
+    // }
+  }
+
+  Future viewStudentAssignment(String classesId, String sectionId) async {
+    final url =
+        "https://www.edwardses.net/edwardswebservice/Get_studentassignmentall.php";
+    try {
+      var response = await _dio.post(url,
+          queryParameters: {'classesid': classesId, 'sectionId': sectionId});
+      print(response);
+      return response.data;
+    } on DioError {
+      return false;
+    }
+  }
+
+  Future uploadAssingment(
+      {String assignmentId, String studentId, File uploadedFile}) async {
+    final url =
+        "https://www.edwardses.net/edwardswebservice/Post_assignmentreply.php";
+
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    request.fields["assignmentID"] = assignmentId;
+    request.fields["studentID"] = studentId;
+    if (uploadedFile != null)
+      request.files.add(await http.MultipartFile.fromPath(
+          "uploaded_file", uploadedFile.path));
+
+    try {
+      var response = await request.send();
+      print(response.reasonPhrase);
+      print(response.reasonPhrase);
+
+      // return response.reasonPhrase;
+      // var response = await _dio.post(url, queryParameters: {
+      //   'assignmentID': assignmentId,
+      //   'studentID': studentId,
+      //   'uploaded_file': uploadedFile.path
+      // });
+      // print(response);
+      // return response.data;
+    } on DioError catch (e) {
+      throw e.error;
+    }
+  }
+
+  assignmentListing(String assignmentId) async {
+    final url =
+        "https://www.edwardses.net/edwardswebservice/Get_assignmentupload.php?assignmentID=$assignmentId";
+
+    try {
+      var response = await _dio.get(
+        url,
+      );
+
+      return response.data;
+    } on DioError {
+      return "";
+    }
+  }
+
+  youTubeVideo() async {
+    final url = "https://www.edwardses.net/edwardswebservice/Get_popup.php";
+
+    try {
+      var response = await _dio.get(
+        url,
+      );
+
+      return response.data;
+    } on DioError {
+      return "";
+    }
+  }
+
+  upcomingClassesStudent(String classesId, String sectionId) async {
+    final url =
+        "https://www.edwardses.net/edwardswebservice/Get_zoompending.php";
+
+    try {
+      var response = await _dio.post(url,
+          queryParameters: {'classesID': classesId, 'sectionID': sectionId});
+      // var response = await _dio.get(
+      //   url,
+      // );
+
+      return response.data;
+    } on DioError {
+      return "";
+    }
+  }
+
+  todayClassesStudent(String classesId, String sectionId) async {
+    final url = "https://www.edwardses.net/edwardswebservice/Get_zoomstart.php";
+
+    try {
+      var response = await _dio.post(url,
+          queryParameters: {'classesID': classesId, 'sectionID': sectionId});
+      // var response = await _dio.get(
+      //   url,
+      // );
+
+      return response.data;
+    } on DioError {
+      return "";
+    }
+  }
+
+  completedClassesStudent(String classesId, String sectionId) async {
+    final url =
+        "https://www.edwardses.net/edwardswebservice/Get_zoomcomplete.php";
+
+    try {
+      var response = await _dio.post(url,
+          queryParameters: {'classesID': classesId, 'sectionID': sectionId});
+      // var response = await _dio.get(
+      //   url,
+      // );
+
+      return response.data;
+    } on DioError {
+      return "";
+    }
+  }
+
+  todayClassesTeacher(
+    String teacherId,
+  ) async {
+    final url =
+        "https://www.edwardses.net/edwardswebservice/Get_zoomtstart.php";
+
+    try {
+      var response = await _dio.post(url, queryParameters: {
+        'teacherId': teacherId,
+      });
+      // var response = await _dio.get(
+      //   url,
+      // );
+
+      return response.data;
+    } on DioError {
+      return "";
+    }
+  }
+
+  upcomingClassesTeacher(
+    String teacherId,
+  ) async {
+    final url =
+        "https://www.edwardses.net/edwardswebservice/Get_zoomtpending.php?";
+
+    try {
+      var response =
+          await _dio.post(url, queryParameters: {'teacherId': teacherId});
+      // var response = await _dio.get(
+      //   url,
+      // );
+
+      return response.data;
+    } on DioError {
+      return "";
+    }
+  }
+
+  completedClassesTeacher(String teacherId) async {
+    final url =
+        "https://www.edwardses.net/edwardswebservice/Get_zoomtcomplete.php";
+
+    try {
+      var response = await _dio.post(url, queryParameters: {
+        'teacherId': teacherId,
+      });
+      // var response = await _dio.get(
+      //   url,
+      // );
+
+      return response.data;
+    } on DioError {
+      return "";
+    }
+  }
+
+  activeClass(String teacherId, String meetingId) async {
+    final url =
+        "https://www.edwardses.net/edwardswebservice/Post_activateclass.php";
+
+    try {
+      var response = await _dio.post(url, queryParameters: {
+        'teacherID': teacherId,
+        'meetingID': meetingId,
+      });
+      // var response = await _dio.get(
+      //   url,
+      // );
+
+      return response.data;
+    } on DioError {
+      return "";
+    }
+  }
+
+  addClasses(
+      {String date,
+      String classesId,
+      String sectionId,
+      String subject,
+      String jointime,
+      String teacherId,
+      String meetingId,
+      String endtime}) async {
+    final url =
+        "https://www.edwardses.net/edwardswebservice/Post_addassignment.php";
+
+    try {
+      var response = await _dio.post(url, queryParameters: {
+        'date': date,
+        'classesID': classesId,
+        'sectionID': sectionId,
+        'subject': subject,
+        'joindtime': jointime,
+        'teacherId': teacherId,
+        'meetingID': meetingId,
+        'endtime': endtime
+      });
+      // var response = await _dio.get(
+      //   url,
+      // );
+
+      return response.data;
+    } on DioError {
+      return "";
+    }
+  }
+
   Future<List<FeeModel>> getFeesInvoice() async {
     final url =
-        "https://zvb.fbs.mybluehostin.me/duncan/duncanwebservice/Get_getfees.php?studentId=1";
+        "https://www.edwardses.net/edwardswebservice/Get_getfees.php?studentId=1";
 
     try {
       var res = await _dio.get(

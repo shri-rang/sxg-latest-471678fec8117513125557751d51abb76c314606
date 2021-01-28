@@ -18,6 +18,7 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:simple_x_genius/model/stuentInfoModel.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 
 // import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 // import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
@@ -164,6 +165,20 @@ class _StudentCircularDetailsState extends State<StudentCircularDetails> {
                                                     Align(
                                                       alignment:
                                                           Alignment.topLeft,
+                                                      child: Text(
+                                                        provider
+                                                            .replyMessages[
+                                                                index]
+                                                            .name,
+                                                        style: TextStyle(
+                                                          color:
+                                                              Colors.redAccent,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.topLeft,
                                                       child: SelectableLinkify(
                                                         text: provider
                                                             .replyMessages[
@@ -220,23 +235,46 @@ class _StudentCircularDetailsState extends State<StudentCircularDetails> {
                                                                             .center,
                                                                     children: <
                                                                         Widget>[
-                                                                      Icon(Icons
-                                                                          .file_download),
+                                                                      Icon(
+                                                                        EvaIcons
+                                                                            .eye,
+                                                                        size:
+                                                                            25,
+                                                                      ),
                                                                     ],
                                                                   ),
                                                                   onTap:
                                                                       () async {
-                                                                    if (await Permission
-                                                                        .storage
-                                                                        .request()
-                                                                        .isGranted) {
-                                                                      _requestDownload(provider
-                                                                          .replyMessages[
-                                                                              index]
-                                                                          .fileURL);
-                                                                    } else {
-                                                                      openAppSettings();
-                                                                    }
+                                                                    print(provider
+                                                                        .replyMessages[
+                                                                            index]
+                                                                        .fileURL);
+
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .push(
+                                                                            MaterialPageRoute(
+                                                                      builder:
+                                                                          (_) =>
+                                                                              StudentImageViewer(
+                                                                        attachment: provider
+                                                                            .replyMessages[index]
+                                                                            .fileURL,
+                                                                      ),
+                                                                    ));
+                                                                    // if (
+
+                                                                    // await Permission
+                                                                    //   .storage
+                                                                    //   .request()
+                                                                    //   .isGranted) {
+                                                                    // _requestDownload(provider
+                                                                    //     .replyMessages[
+                                                                    //         index]
+                                                                    //     .fileURL);
+                                                                    // } else {
+                                                                    //   openAppSettings();
+                                                                    // }
                                                                   },
                                                                 ),
                                                               ),
@@ -245,14 +283,20 @@ class _StudentCircularDetailsState extends State<StudentCircularDetails> {
                                                     Align(
                                                       alignment:
                                                           Alignment.bottomRight,
-                                                      child: Text(
-                                                        provider
-                                                            .replyMessages[
-                                                                index]
-                                                            .creationTime,
-                                                        style: TextStyle(
-                                                          color: lightGreyColor,
-                                                          fontSize: 9.0,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Text(
+                                                          provider
+                                                              .replyMessages[
+                                                                  index]
+                                                              .creationTime,
+                                                          style: TextStyle(
+                                                            color:
+                                                                lightGreyColor,
+                                                            fontSize: 9.0,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
@@ -458,7 +502,7 @@ class _StudentCircularDetailsState extends State<StudentCircularDetails> {
                 ),
               )
             : attachmentWidget(
-                from: "",
+                from: "hii",
                 to: "",
                 subject: widget.circularStudentModel.subject,
                 message: widget.circularStudentModel.message,
@@ -545,10 +589,11 @@ class _StudentCircularDetailsState extends State<StudentCircularDetails> {
                       })),
               // RaisedButton(
               //   onPressed: () {
-              //     var fileType = attachFileName.split('.');
-              //     print('file type ${fileType}');
-              //     print(fileType.elementAt(2));
-              //     var fileImgVsPdf = fileType.elementAt(2);
+              //     print(attachFileName);
+              //     // var fileType = attachFileName.split('.');
+              //     // print('file type ${fileType}');
+              //     // print(fileType.elementAt(2));
+              //     // var fileImgVsPdf = fileType.elementAt(2);
               //   },
               // ),
               //   PhotoView(
@@ -556,11 +601,13 @@ class _StudentCircularDetailsState extends State<StudentCircularDetails> {
               //   ),
               // ),
 
-              // Image.network(
-              //   '$attachFileName',
-              //   height: 150,
-              //   width: 400,
-              // )),
+              // Container(
+              //   child: Image.network(
+              //     '$attachFileName',
+              //     height: 150,
+              //     width: 400,
+              //   ),
+              // ),
               // Text("Attachment: "),
               SizedBox(
                 height: 8.0,

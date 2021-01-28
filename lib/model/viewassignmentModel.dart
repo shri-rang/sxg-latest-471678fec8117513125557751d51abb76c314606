@@ -6,6 +6,9 @@ class ViewAssignmentModel {
   String classes;
   String section;
   String docFile;
+  String name;
+  String teacherId;
+  String date;
 
   ViewAssignmentModel(
       {this.assignmentId,
@@ -14,7 +17,10 @@ class ViewAssignmentModel {
       this.classId,
       this.classes,
       this.section,
-      this.docFile});
+      this.docFile,
+      this.name,
+      this.teacherId,
+      this.date});
 
   ViewAssignmentModel.fromJson(Map<String, dynamic> json) {
     assignmentId = json['assignmentID'] ?? "";
@@ -25,5 +31,8 @@ class ViewAssignmentModel {
     classes = json['classes'] ?? "";
     section = json['section'] ?? "";
     docFile = json['doc_file'] ?? "";
+    name = json['name'] ?? "";
+    teacherId = json['teacherID'] ?? "";
+    date = json['notif_time'] ?? "";
   }
 }

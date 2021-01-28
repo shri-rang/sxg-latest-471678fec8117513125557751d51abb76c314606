@@ -84,7 +84,7 @@ class _HomeParentPageState extends State<HomeParentPage> {
                         actions: <Widget>[
                           FlatButton(
                             onPressed: () => Navigator.pop(context),
-                            child: Text('Go Back'),
+                            child: Text('Close'),
                           )
                         ],
                         title: Center(child: Text(snapshot.data[index].title)),
@@ -187,6 +187,11 @@ class _HomeParentPageState extends State<HomeParentPage> {
                       title: Text("Parent"),
                       centerTitle: true,
                       actions: <Widget>[
+                        // RaisedButton(
+                        //   onPressed: (){
+                        //     print(snapshot);
+                        //   },
+                        // ),
                         IconButton(
                           icon: Icon(Icons.exit_to_app),
                           onPressed: () {

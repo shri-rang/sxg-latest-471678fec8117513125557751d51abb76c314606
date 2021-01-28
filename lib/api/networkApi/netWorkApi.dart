@@ -98,7 +98,8 @@ class NetworkApiClient {
                 : "https://www.edwardses.net/edwardswebservice/Get_circular.php?studentID=$id" //student circular
             : uitype == UIType.DairyNotes
                 ? isTeacher
-                    ? "https://www.edwardses.net/edwardswebservice/sxgwebservice/Get_tlistdiarynotes.php?uid=$id" //teacher dairy note
+                    ? "https://www.edwardses.net/edwardswebservice/Get_tlistdiarynotes.php?uid=$id" //teacher dairy note
+                    // https://www.edwardses.net/edwardswebservice/sxgwebservice/Get_tlistdiarynotes.php?uid=$id
                     : "https://www.edwardses.net/edwardswebservice/Get_diarynotes.php?studentID=$id" //student dairy note
                 : "";
 
@@ -112,6 +113,18 @@ class NetworkApiClient {
   }
 
   Future getParentInfoFromServer(String parentId) async {
+    final url =
+        "https://www.edwardses.net/edwardswebservice/Get_parentslist.php?studentID=$parentId";
+    try {
+      var response = await _dio.post(url);
+
+      return response.data;
+    } on DioError catch (e) {
+      throw e.error;
+    }
+  }
+
+  Future getStParentInfoFromServer(String parentId) async {
     final url =
         "https://www.edwardses.net/edwardswebservice/Get_parentslist.php?ParentID=$parentId";
     try {
@@ -161,7 +174,24 @@ class NetworkApiClient {
         url,
       );
 
-      //   print(response);
+      // print(response);
+
+      return response.data;
+    } on DioError catch (e) {
+      throw e.error;
+    }
+  }
+
+  Future getSubjectFromServer(String classId) async {
+    final url =
+        "https://www.edwardses.net/edwardswebservice/Get_subjectlist.php?classid=$classId";
+
+    try {
+      var response = await _dio.get(
+        url,
+      );
+
+      print(response);
 
       return response.data;
     } on DioError catch (e) {
@@ -599,8 +629,9 @@ class NetworkApiClient {
 
   Future changePassWordApi(
       {String oldPassword, String newPassword, String phoneNumber}) async {
-    final String url = "http://theduncanacademy.com/apihostt/change_password";
-    // "https://www.edwardses.net/edwardswebservice/apihost/change_password";
+    final String url =
+        // "http://theduncanacademy.com/apihostt/change_password";
+        "https://www.edwardses.net/edwardswebservice/apihost/change_password";
     try {
       var response = await _dio.post(url, queryParameters: {
         'username': phoneNumber,
@@ -617,8 +648,9 @@ class NetworkApiClient {
 
   Future forgetPassWordApi(
       {String otp, String newPassword, String phoneNumber}) async {
-    final String url = "http://theduncanacademy.com/apihost/forget_password";
-    // "https://www.edwardses.net/edwardswebservice/apihost/forget_password";
+    final String url =
+        // "http://theduncanacademy.com/apihost/forget_password";
+        "https://www.edwardses.net/edwardswebservice/apihost/forget_password";
     try {
       var response = await _dio.post(url, queryParameters: {
         'username': phoneNumber,
@@ -634,8 +666,9 @@ class NetworkApiClient {
   }
 
   Future forgetPassPhoneInputApi(String phoneNumber) async {
-    final String url = "http://theduncanacademy.com/apihost/forget_password";
-    // "https://www.edwardses.net/edwardswebservice/apihost/forget_password";
+    final String url =
+        // "http://theduncanacademy.com/apihost/forget_password";
+        "https://www.edwardses.net/edwardswebservice/apihost/forget_password";
 
     try {
       var response = await _dio.post(url, queryParameters: {
@@ -701,23 +734,64 @@ class NetworkApiClient {
     }
   }
 
-  Future uploadAssingment(
-      {String assignmentId, String studentId, File uploadedFile}) async {
-    final url =
+  Future uploadAssingment({
+    String assignmentId,
+    String studentId,
+    File uploadedFile,
+    String fileName,
+    String uploadMessage,
+    // String fileExtension
+  }) async {
+    print(uploadedFile);
+    print(fileName);
+    // print(fileExtension);
+    final String url =
         "https://www.edwardses.net/edwardswebservice/Post_assignmentreply.php";
 
-    var request = http.MultipartRequest('POST', Uri.parse(url));
-    request.fields["assignmentID"] = assignmentId;
-    request.fields["studentID"] = studentId;
-    if (uploadedFile != null)
-      request.files.add(await http.MultipartFile.fromPath(
-          "uploaded_file", uploadedFile.path));
+    FormData formData = FormData();
+    // var request = http.MultipartRequest('POST', Uri.parse(url));
+    // request.fields["assignmentID"] = assignmentId;
+    // request.fields["studentID"] = studentId;
 
+    formData.files.add(MapEntry(
+        "uploaded_file",
+        await MultipartFile.fromFile(
+          uploadedFile.path,
+          filename: fileName,
+          // contentType: MediaType(
+          //     // fileExtension == "pdf" ? 'application' : 'image',
+          //     // fileExtension
+          //     )
+        )));
+
+    formData.fields.add(
+      MapEntry("assignmentID", assignmentId),
+    );
+    formData.fields.add(
+      MapEntry("studentID", studentId),
+    );
+    var progress;
     try {
-      var response = await request.send();
-      print(response.reasonPhrase);
-      print(response.reasonPhrase);
+      var response = await _dio.post(url,
+          //     onSendProgress: (actualbytes, totalbytes) {
+          //   uploadMessage = actualbytes.toString();
+          // },
 
+          onSendProgress: (int sent, int total) {
+        progress = sent / total;
+        print('progress: $progress ($sent/$total)');
+        return progress;
+      },
+          data: formData,
+          options: Options(
+              method: 'POST',
+              headers: {"Content-Type": "multipart/form-data"}));
+      //  await request.send();
+      print(response.data);
+
+//
+//,
+// )
       // return response.reasonPhrase;
       // var response = await _dio.post(url, queryParameters: {
       //   'assignmentID': assignmentId,
@@ -725,21 +799,22 @@ class NetworkApiClient {
       //   'uploaded_file': uploadedFile.path
       // });
       // print(response);
+      return response.data;
       // return response.data;
     } on DioError catch (e) {
       throw e.error;
     }
   }
 
-  assignmentListing(String assignmentId) async {
+  assignmentListing({String assignmentId, String studentId}) async {
     final url =
-        "https://www.edwardses.net/edwardswebservice/Get_assignmentupload.php?assignmentID=$assignmentId";
+        "https://www.edwardses.net/edwardswebservice/Get_assignmentupload.php?assignmentID=$assignmentId&$studentId";
 
     try {
       var response = await _dio.get(
         url,
       );
-
+      print(response.data);
       return response.data;
     } on DioError {
       return "";
@@ -888,31 +963,90 @@ class NetworkApiClient {
 
   addClasses(
       {String date,
-      String classesId,
+      String classes,
       String sectionId,
       String subject,
       String jointime,
       String teacherId,
-      String meetingId,
+      // String meetingId,
       String endtime}) async {
+    print('date:$date');
+    print('class: $classes');
+    print('section:$sectionId');
+    print('sub:$subject');
+    print('join:$jointime');
+    print('tech:$teacherId');
+    print('end:$endtime');
+
     final url =
         "https://www.edwardses.net/edwardswebservice/Post_addassignment.php";
 
     try {
+      var response = await _dio.post(url, data: {
+        "SXG": {
+          'date': date,
+          'classesID': classes,
+          'sectionID': sectionId,
+          'subject': subject,
+          'joindtime': jointime,
+          'teacherID': teacherId,
+          // 'meetingID': meetingId,
+          'endtime': endtime
+        }
+      });
+
+      //  var response = await _dio.post(url, data: {
+      //   "SXG": {
+      //     "classid": classId,
+      //     "sectionid": sectionId,
+      //     "attendance": attendance,
+      //     "date": date,
+      //     "studentid": studentId
+      //   }
+      // }
+      // );
+      // var response = await _dio.get(
+      //   url,
+      // );
+      print(response.data);
+      return response.data;
+    } on DioError {
+      return "";
+    }
+  }
+
+  Future studentData(String studentId) async {
+    final url =
+        "https://www.edwardses.net/edwardswebservice/Get_parentsbystudent.php";
+
+    try {
       var response = await _dio.post(url, queryParameters: {
-        'date': date,
-        'classesID': classesId,
-        'sectionID': sectionId,
-        'subject': subject,
-        'joindtime': jointime,
-        'teacherId': teacherId,
-        'meetingID': meetingId,
-        'endtime': endtime
+        'studentID': studentId,
       });
       // var response = await _dio.get(
       //   url,
       // );
 
+      return response.data;
+    } on DioError {
+      return "";
+    }
+  }
+
+  Future studentAssigntSentToTeacher(
+      {String studentId, String assignmentId}) async {
+    final url =
+        "https://www.edwardses.net/edwardswebservice/Get_assignmentuploadbystudentid.php";
+
+    try {
+      var response = await _dio.post(url, queryParameters: {
+        'studentID': studentId,
+        'assignmentID': assignmentId
+      });
+      // var response = await _dio.get(
+      //   url,
+      // );
+      print(response);
       return response.data;
     } on DioError {
       return "";

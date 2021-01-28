@@ -21,7 +21,7 @@ PreferredSize customAppBarProfile(
                     height: 200,
                     width: double.infinity,
                     child: Image.asset(
-                      'assets/images/student.jpg',
+                      'assets/images/1.jpg',
                       fit: BoxFit.fill,
                     )),
                 Stack(
@@ -52,7 +52,60 @@ PreferredSize customAppBarProfile(
             width: 100.0,
             imageUrl: imageUrl,
           )
-          
+        ],
+      ),
+    ),
+  );
+}
+
+PreferredSize customAppBarProfileone(
+    {VoidCallback backTap, @required String imageUrl}) {
+  return PreferredSize(
+    preferredSize: Size.fromHeight(200.0),
+    child: Container(
+      height: 200,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          ClipPath(
+            clipper: DiagonalPathClipperTwo(),
+            child: Stack(
+              children: [
+                Container(
+                    height: 200,
+                    width: double.infinity,
+                    child: Image.asset(
+                      'assets/images/edward.jpg',
+                      fit: BoxFit.fill,
+                    )),
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      height: 200,
+                      width: double.infinity,
+                      decoration:
+                          BoxDecoration(color: blackColor.withOpacity(0.2)),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 20.0),
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: whiteColor,
+                          ),
+                          onPressed: backTap),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+          CircularNetworkImageWidget(
+            borderadius: 100.0,
+            height: 100.0,
+            width: 100.0,
+            imageUrl: imageUrl,
+          )
         ],
       ),
     ),

@@ -13,22 +13,27 @@ class CircularStudentModel {
   String remindDate;
   String replyStatus;
   String favStatusSent;
+  String from;
+  String to;
 
-  CircularStudentModel(
-      {this.message,
-      this.messageId,
-      this.attachFileName,
-      this.favStatusSent,
-      this.notifyLoop,
-      this.notifyRepeat,
-      this.notifyTime,
-      this.readStatus,
-      this.remindDate,
-      this.remindTime,
-      this.replyStatus,
-      this.subject,
-      this.type,
-      this.title});
+  CircularStudentModel({
+    this.message,
+    this.messageId,
+    this.attachFileName,
+    this.favStatusSent,
+    this.notifyLoop,
+    this.notifyRepeat,
+    this.notifyTime,
+    this.readStatus,
+    this.remindDate,
+    this.remindTime,
+    this.replyStatus,
+    this.subject,
+    this.type,
+    this.title,
+    this.from,
+    this.to,
+  });
 
   CircularStudentModel.fromJson(Map<String, dynamic> json) {
     messageId = json['messageID'] ?? "";
@@ -45,8 +50,7 @@ class CircularStudentModel {
     title = json['title'] ?? "";
     replyStatus = json['reply_status'] ?? "";
     favStatusSent = json['fav_status_sent'] ?? "";
+    from = json["from"] ?? "";
+    to = json["to"] ?? "";
   }
 }
-
-
-

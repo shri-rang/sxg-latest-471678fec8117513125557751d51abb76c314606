@@ -39,7 +39,9 @@ updateDeviceToken({
   @required context,
 }) {
   firebaseMessaging.getToken().then((token) {
+    // var token = 'sadasdSda';
     print('token: $token');
+    print(phoneNumber);
     networkApiClient.updateToken(
       number: phoneNumber,
       token: token,

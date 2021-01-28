@@ -33,7 +33,7 @@ class _AttendancePageState extends State<AttendancePage> {
       appBar: AppBar(
         backgroundColor: whiteColor,
         title: Text(
-          "Attendace",
+          "Attendance",
           style: TextStyle(color: blackColor),
         ),
         iconTheme: IconThemeData(color: blackColor),

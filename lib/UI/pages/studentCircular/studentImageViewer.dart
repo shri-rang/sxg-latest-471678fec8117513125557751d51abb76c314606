@@ -14,6 +14,10 @@ class StudentImageViewer extends StatelessWidget {
       body: Container(
         child: PhotoView(
           imageProvider: NetworkImage("$attachment"),
+          loadFailedChild: CircularProgressIndicator(),
+          loadingBuilder: (context, event) {
+            return Center(child: CircularProgressIndicator());
+          },
         ),
         // ),
       ),

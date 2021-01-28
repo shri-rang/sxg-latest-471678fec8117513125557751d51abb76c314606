@@ -48,7 +48,7 @@ class _StudentCircularListState extends State<StudentCircularList> {
                   ? "Circular"
                   : widget.uitype == UIType.DairyNotes
                       ? "DiaryNotes"
-                      : "",
+                      : "No Message",
           style: TextStyle(color: blackColor),
         ),
         iconTheme: IconThemeData(color: blackColor),
@@ -72,7 +72,10 @@ class _StudentCircularListState extends State<StudentCircularList> {
           // : _netWorkAPiRepository.getStudentCircularDataModel(
           //     widget.studentInfoModel.studenId),
           builder: (context, circularData) {
-            if (circularData == null) return Container();
+            if (circularData == null)
+              return Container(
+                child: Center(child: Text('Now Not Available')),
+              );
             if (circularData.isEmpty)
               return Center(
                 child: Text("No Data found"),
@@ -85,6 +88,8 @@ class _StudentCircularListState extends State<StudentCircularList> {
                 scrollDirection: Axis.horizontal,
                 child: DataTable(
                   columns: [
+                    DataColumn(label: Text('From')),
+                    DataColumn(label: Text('To')),
                     DataColumn(label: Text('Subject')),
                     DataColumn(label: Text('Message')),
                     DataColumn(label: Text('Date/Time')),
@@ -92,6 +97,34 @@ class _StudentCircularListState extends State<StudentCircularList> {
                   rows: circularData
                       .map((data) => DataRow(
                             cells: [
+                              DataCell(
+                                  Text(
+                                    data.from,
+                                    style: TextStyle(
+                                        color: data.readStatus == "0"
+                                            ? blueColor
+                                            : data.readStatus == "1"
+                                                ? greyColor
+                                                : blackColor),
+                                  ), onTap: () {
+                                handleOntap(
+                                  data,
+                                );
+                              }),
+                              DataCell(
+                                  Text(
+                                    data.to,
+                                    style: TextStyle(
+                                        color: data.readStatus == "0"
+                                            ? blueColor
+                                            : data.readStatus == "1"
+                                                ? greyColor
+                                                : blackColor),
+                                  ), onTap: () {
+                                handleOntap(
+                                  data,
+                                );
+                              }),
                               DataCell(
                                   Text(
                                     data.title,

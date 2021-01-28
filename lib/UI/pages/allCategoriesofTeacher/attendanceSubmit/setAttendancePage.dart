@@ -43,9 +43,10 @@ class _SetAttandencePageState extends State<SetAttandencePage> {
           appBar: AppBar(
             backgroundColor: whiteColor,
             title: Text(
-              "Student Attendace",
+              "Student Attendance",
               style: TextStyle(color: blackColor),
             ),
+
             leading: IconButton(
               icon: Icon(Icons.arrow_back, color: blackColor),
               onPressed: () {
@@ -79,8 +80,8 @@ class _SetAttandencePageState extends State<SetAttandencePage> {
             //   }
 
             if (attendanceProvider.attendaneceStudentAllData.isNotEmpty) {
-              attendanceProvider.attendaneceStudentAllData.sort((a, b) =>
-                  a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+              // attendanceProvider.attendaneceStudentAllData.sort((a, b) =>
+              //     a.name.toLowerCase().compareTo(b.name.toLowerCase()));
               return IgnorePointer(
                 ignoring: attendanceProvider.loaderState,
                 child: SingleChildScrollView(
@@ -89,8 +90,8 @@ class _SetAttandencePageState extends State<SetAttandencePage> {
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: DataTable(
-                          horizontalMargin: 10.0,
-                          columnSpacing: 5.0,
+                            horizontalMargin: 10.0,
+                            columnSpacing: 33.0,
                             columns: [
                               DataColumn(label: Text("Name")),
                               DataColumn(label: Text("Roll")),
@@ -113,7 +114,7 @@ class _SetAttandencePageState extends State<SetAttandencePage> {
                                           }
                                         }),
                                   ),
-                                  Text("Full Day")
+                                  Text("Present")
                                 ],
                               )),
                               //half day
@@ -123,8 +124,7 @@ class _SetAttandencePageState extends State<SetAttandencePage> {
                                   SizedBox(
                                     height: 24.0,
                                     width: 24.0,
-
-                                                                      child: Checkbox(
+                                    child: Checkbox(
                                         value: attendanceProvider
                                             .allHalfDayaSelction,
                                         onChanged: (v) {
@@ -139,37 +139,42 @@ class _SetAttandencePageState extends State<SetAttandencePage> {
                                           }
                                         }),
                                   ),
-                                  Text("Half Day")
+                                  Text("Absent")
                                 ],
                               )),
 
                               //school holiday
-                              DataColumn(
-                                  label: Row(
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: 24.0,
-                                    width: 24.0,
-                                                                      child: Checkbox(
-                                        value: attendanceProvider
-                                            .allSchoolHolidaySelection,
-                                        onChanged: (v) {
-                                          if (v) {
-                                            setAttendanceToAllFunction(
-                                                attendanceProvider, "SH");
-                                          } else {}
-                                        }),
-                                  ),
-                                  Text("School Holiday")
-                                ],
-                              ))
+                              // DataColumn(
+                              //     label: Row(
+                              //   children: <Widget>[
+                              //     SizedBox(
+                              //       height: 24.0,
+                              //       width: 24.0,
+                              //       child: Checkbox(
+                              //           value: attendanceProvider
+                              //               .allSchoolHolidaySelection,
+                              //           onChanged: (v) {
+                              //             if (v) {
+                              //               setAttendanceToAllFunction(
+                              //                   attendanceProvider, "SH");
+                              //             } else {}
+                              //           }),
+                              //     ),
+                              //     Text("School Holiday")
+                              //   ],
+                              // )
+                              // )
                             ],
                             rows: attendanceProvider.attendaneceStudentAllData
                                 .map((stuData) {
                               // int index = attendanceProvider
                               //     .attendaneceStudentAllData
                               //     .indexOf(stuData);
-
+                              // var nlist = [4, 2, 1, 5];
+                              // stuData.roll = (a, b) => a.toString().compareTo(b.toString());
+                              // var compare = (a, b) => a.compareTo(b);
+                              // nlist.sort(compare);
+                              // print(nlist);
                               return DataRow(cells: [
                                 DataCell(Text(stuData.name.length > 13
                                     ? stuData.name.toString().substring(0, 13)
@@ -178,8 +183,8 @@ class _SetAttandencePageState extends State<SetAttandencePage> {
                                 //full day
                                 DataCell(SizedBox(
                                   height: 24.0,
-                                    width: 24.0,
-                                                                  child: Checkbox(
+                                  width: 24.0,
+                                  child: Checkbox(
                                     value: stuData.attendance.toString() == "P"
                                         ? true
                                         : false,
@@ -194,33 +199,32 @@ class _SetAttandencePageState extends State<SetAttandencePage> {
 
                                 //half day
                                 DataCell(SizedBox(
-                                                  height: 24.0,
-                                    width: 24.0,                child: Checkbox(
+                                  height: 24.0,
+                                  width: 24.0,
+                                  child: Checkbox(
                                     value: stuData.attendance.toString() == 'H'
                                         ? true
                                         : false,
                                     onChanged: (v) {
-                                   
-                                        setAttendanceToSingleStudentFunction(
-                                            attendanceProvider,
-                                            stuData.studentID,
-                                            v ? "H" : "A");
+                                      setAttendanceToSingleStudentFunction(
+                                          attendanceProvider,
+                                          stuData.studentID,
+                                          v ? "H" : "A");
                                     },
                                   ),
                                 )),
 
                                 //holiday
-                                DataCell(SizedBox(
-                                  height: 24.0,
-                                    width: 24.0,
-
-                                                                  child: Checkbox(
-                                    value: stuData.attendance.toString() == 'SH'
-                                        ? true
-                                        : false,
-                                    onChanged: (v) {},
-                                  ),
-                                ))
+                                // DataCell(SizedBox(
+                                //   height: 24.0,
+                                //   width: 24.0,
+                                //   child: Checkbox(
+                                //     value: stuData.attendance.toString() == 'SH'
+                                //         ? true
+                                //         : false,
+                                //     onChanged: (v) {},
+                                //   ),
+                                // ))
                               ]);
                             }).toList()),
                       ),
@@ -282,7 +286,6 @@ class _SetAttandencePageState extends State<SetAttandencePage> {
           ? "Attendance Submitted successfully"
           : "Attendance submission failed"),
       duration: Duration(seconds: 2),
-    )
-    );
+    ));
   }
 }

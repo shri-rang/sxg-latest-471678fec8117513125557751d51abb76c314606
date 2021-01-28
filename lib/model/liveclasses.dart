@@ -107,6 +107,7 @@ class TodayLiveModelTeacher {
   String scheduleTime;
   String endTime;
   String teacher;
+  String section;
 
   TodayLiveModelTeacher({
     this.currentStatus,
@@ -118,6 +119,7 @@ class TodayLiveModelTeacher {
     this.scheduleTime,
     this.endTime,
     this.teacher,
+    this.section,
   });
 
   TodayLiveModelTeacher.fromJson(Map<String, dynamic> json) {
@@ -131,6 +133,7 @@ class TodayLiveModelTeacher {
     scheduleTime = json['schedule_time'] ?? "";
     endTime = json['end_time'] ?? "";
     teacher = json['teacher'] ?? "";
+    section = json['sectionID'] ?? "";
   }
 }
 

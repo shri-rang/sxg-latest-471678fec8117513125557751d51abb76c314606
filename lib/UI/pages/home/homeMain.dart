@@ -28,19 +28,21 @@ class _HomeMainPageState extends State<HomeMainPage> {
 
   @override
   void initState() {
-    print(StorageUtil.getListString('userInfo')[2].length);
-    print(StorageUtil.getListString('userInfo')[0].length);
-    print(StorageUtil.getListString('userInfo')[2]);
-    print(StorageUtil.getListString('userInfo')[0]);
+    // print(StorageUtil.getListString('userInfo')[2].length);
+    // print(StorageUtil.getListString('userInfo')[0].length);
+    print('userName: ${StorageUtil.getListString('userInfo')[2]}');
+    // print(StorageUtil.getListString('userInfo')[0]);
     if (StorageUtil.getListString('userInfo').isNotEmpty) {
       updateDeviceToken(
         context: context,
         currentUserType: StorageUtil.getListString(
             'userInfo')[1], //usertype teacher or parent
-        phoneNumber: StorageUtil.getListString('userInfo')[0].length < 0
-            ?StorageUtil.getListString('userInfo')[2]
-             
-            :StorageUtil.getListString('userInfo')[0] , //user phone
+        phoneNumber: StorageUtil.getListString('userInfo')[0],
+        //  StorageUtil.getListString('userInfo')[1] == 'teachers'
+        //     ? StorageUtil.getListString('userInfo')[2]
+        //     : StorageUtil.getListString('userInfo')[1] == 'parents'
+        //         ? StorageUtil.getListString('userInfo')[2]
+        //         : StorageUtil.getListString('userInfo')[0], //user phone
         // studentId: StorageUtil.getListString('userInfo')[0],
         // print(StorageUtil.getListString('userInfo[0]'))
       );

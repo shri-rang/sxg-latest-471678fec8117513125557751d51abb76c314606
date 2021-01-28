@@ -20,6 +20,21 @@ class _TeacherLiveClassesState extends State<TeacherLiveClasses> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          // actions: [
+          //   RaisedButton(
+          //     onPressed: () {
+          //       //     .then((value) => setState(() {}));
+          //       // Navigator.push(
+          //       //   context,
+          //       //   MaterialPageRoute(
+          //       //       builder: (context) => AddClasses(
+          //       //             id: widget.id,
+          //       //           )),
+          //       // ).then((value) => setState(() {}));
+          //       // print(widget.id);
+          //     },
+          //   )
+          // ],
           iconTheme: IconThemeData(color: Colors.blue),
           backgroundColor: Colors.white,
           title: Text(
@@ -56,12 +71,25 @@ class _TeacherLiveClassesState extends State<TeacherLiveClasses> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton.extended(
+          icon: Icon(Icons.add),
           backgroundColor: Colors.red,
-          child: Icon(Icons.add),
+          // child:
+          label: Text('Add Classes'),
           onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => AddClasses()));
+            // Navigator.of(context)
+            //     .push(MaterialPageRoute(
+            //         builder: (_) => AddClasses(
+            //               id: widget.id,
+            //             )))
+            //     .then((value) => setState(() {}));
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddClasses(
+                        id: widget.id,
+                      )),
+            ).then((value) => setState(() {}));
           },
         ),
         body: TabBarView(

@@ -88,6 +88,16 @@ class _AssignmentPageState extends State<AssignmentPage> {
                               height: 15,
                             ),
                             Text(
+                              '${snapshot.data[index].teacherId}',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
                               'Title: ${snapshot.data[index].title}',
                               style: TextStyle(
                                   fontSize: 15,

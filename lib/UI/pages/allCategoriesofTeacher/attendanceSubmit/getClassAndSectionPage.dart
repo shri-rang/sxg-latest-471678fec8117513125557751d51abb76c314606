@@ -36,7 +36,7 @@ class _GetClassAndSectionPageState extends State<GetClassAndSectionPage> {
       appBar: AppBar(
         backgroundColor: whiteColor,
         title: Text(
-          "Student Attendace",
+          "Student Attendance",
           style: TextStyle(color: blackColor),
         ),
         iconTheme: IconThemeData(color: blackColor),
@@ -73,7 +73,7 @@ class _GetClassAndSectionPageState extends State<GetClassAndSectionPage> {
                   }).toList(),
                   onChanged: (value) {
                     print(value.classId);
-                  print(value.classNumeric);
+                    print(value.classNumeric);
                     classSectionProvider.classModel = value;
                     classSectionProvider.sectionModel = null;
                     classSectionProvider
@@ -134,8 +134,8 @@ class _GetClassAndSectionPageState extends State<GetClassAndSectionPage> {
                                       classSectionProvider.classModel.classId,
                                   sectionId: classSectionProvider
                                       .sectionModel.sectionId,
-                                  date: 
-                                          _calendarController.selectedDay.day.toString()   +
+                                  date: _calendarController.selectedDay.day
+                                          .toString() +
                                       "-" +
                                       dayMonthFormatter(_calendarController
                                           .selectedDay.month) +

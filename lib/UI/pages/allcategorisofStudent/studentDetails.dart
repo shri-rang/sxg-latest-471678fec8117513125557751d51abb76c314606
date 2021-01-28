@@ -26,7 +26,7 @@ class _StudentDetailsState extends State<StudentDetails> {
   Widget build(BuildContext context) {
     print(widget.studentInfoModel.photo);
     return Scaffold(
-      appBar: customAppBarProfile(
+      appBar: customAppBarProfileone(
           backTap: () {
             Navigator.of(context).pop();
           },

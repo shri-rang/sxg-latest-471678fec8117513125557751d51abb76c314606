@@ -16,6 +16,7 @@ class StudentInfoModel {
   String admNo;
   String motherTongue;
   String blood;
+  String parentId;
 
   StudentInfoModel.fromMap(Map<String, dynamic> data)
       : studenName = data['name'],
@@ -34,5 +35,6 @@ class StudentInfoModel {
         regNum = data['reg_num'],
         admNo = data['adm_no'],
         motherTongue = data['mother_tongue'],
-        blood = data['blood'];
+        blood = data['blood'],
+        parentId = data['parentID'];
 }

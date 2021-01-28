@@ -14,6 +14,8 @@ import 'package:simple_x_genius/model/sectionModel.dart';
 import 'package:simple_x_genius/model/stuentInfoModel.dart';
 import 'package:simple_x_genius/utility/validator.dart';
 import 'package:path/path.dart' as p;
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class ComposeDairyNotes extends StatefulWidget {
   final String teacherId;
@@ -27,13 +29,13 @@ class ComposeDairyNotes extends StatefulWidget {
 class _ComposeDairyNotesState extends State<ComposeDairyNotes> {
   final TextEditingController _controllerMessage = TextEditingController();
   final TextEditingController _controllerSubject = TextEditingController();
-  File _image;
+  // File _image;
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _loaderState = false;
   final NetWorkAPiRepository _netWorkAPiRepository = NetWorkAPiRepository();
   String studentId;
-   File _file;
+  File _file;
   String fileExtension;
   @override
   void initState() {
@@ -42,11 +44,35 @@ class _ComposeDairyNotesState extends State<ComposeDairyNotes> {
     super.initState();
   }
 
+  File _image;
+  final picker = ImagePicker();
+
+  Future getImagez() async {
+    PickedFile image = await picker.getImage(source: ImageSource.camera);
+         File file = File(image.path);
+      print('nonCom:${file.lengthSync()}');
+      final filePath = file.absolute.path;
+      //   // Create output file path
+      //   // eg:- "Volume/VM/abcd_out.jpeg"
+      final lastIndex = filePath.lastIndexOf(new RegExp(r'.jp'));
+      final splitted = filePath.substring(0, (lastIndex));
+      final outPath = "${splitted}_out${filePath.substring(lastIndex)}";
+      var result = await FlutterImageCompress.compressAndGetFile(
+        image.path,
+        outPath,
+        // outPath,
+        quality: 15,
+      );
+    setState(() {
+      _image = File(image.path);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-           backgroundColor: whiteColor,
+      backgroundColor: whiteColor,
       appBar: AppBar(
         backgroundColor: whiteColor,
         title: Text(
@@ -160,8 +186,8 @@ class _ComposeDairyNotesState extends State<ComposeDairyNotes> {
                                 .map((value) {
                               return new DropdownMenuItem<StudentInfoModel>(
                                 value: value,
-                                child: new Text(value.studenName +
-                                    "\t(${value.roll})\t"),
+                                child: new Text(
+                                    value.studenName + "\t(${value.roll})\t"),
                               );
                             }).toList(),
                             onChanged: (value) {
@@ -195,11 +221,15 @@ class _ComposeDairyNotesState extends State<ComposeDairyNotes> {
                               ),
                               SizedBox(width: 8.0),
                               Expanded(
-                                child: Text(_file != null
-                                    ? p.basename(_file.path)
-                                    : "Add an attachment",maxLines: 1, 
-                                    overflow: TextOverflow.ellipsis,
-                                    ),
+                                child: Text(
+                                  _file != null
+                                      ? p.basename(_file.path)
+                                      : _image != null
+                                          ? p.basename(_image.path)
+                                          : "Add an attachment",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               )
                             ],
                           ),
@@ -208,8 +238,84 @@ class _ComposeDairyNotesState extends State<ComposeDairyNotes> {
                       ),
                     ),
                     SizedBox(
-                      height: 15.0,
+                      height: 10.0,
                     ),
+                    Container(
+                      child: Row(
+                        children: [
+                          RaisedButton(
+                            color: Colors.blue,
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: Text(
+                                'Use Camera',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  //  fontSize: 20
+                                ),
+                              ),
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              // side: BorderSide(color: Colors.red)
+                            ),
+                            onPressed: () {
+                              getImagez();
+                              // Navigator.of(context)
+                              //     .push(MaterialPageRoute(
+                              //   builder: (context) =>
+                              //       TeacherUploadAssignment(
+                              //     assignment: snapshot.data[index],
+                              //     // studentInfoModel:
+                              //     //     widget.teacherId,
+                              //   ),
+                              // ));
+                            },
+                          ),
+                          SizedBox(
+                            // height: 10,
+                            width: 8,
+                          ),
+                          RaisedButton(
+                            color: Colors.blue,
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: Text(
+                                'Use Gallery',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  //  fontSize: 20
+                                ),
+                              ),
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              // side: BorderSide(color: Colors.red)
+                            ),
+                            onPressed: () {
+                              getFilePath();
+                              // getImagez();
+                              // Navigator.of(context)
+                              //     .push(MaterialPageRoute(
+                              //   builder: (context) =>
+                              //       TeacherUploadAssignment(
+                              //     assignment: snapshot.data[index],
+                              //     // studentInfoModel:
+                              //     //     widget.teacherId,
+                              //   ),
+                              // ));
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    // RaisedButton(
+                    //   child: Text('Use Camera'),
+                    //   onPressed: () {
+                    //     getImagez();
+                    //     // getImageFile(ImageSource.camera);
+                    //   },
+                    // ),
                     TextFormField(
                         controller: _controllerSubject,
                         validator: (v) => Validator.commonValidation(
@@ -253,9 +359,9 @@ class _ComposeDairyNotesState extends State<ComposeDairyNotes> {
                                           sectionId: classSectionProvder
                                               .sectionModel.sectionId,
                                           fileName: _file != null
-                                        ? p.basename(_file.path)
-                                        : "",
-                                        fileExtension: fileExtension??"",
+                                              ? p.basename(_file.path)
+                                              : "",
+                                          fileExtension: fileExtension ?? "",
                                           message: _controllerMessage.text,
                                           teacherId: widget.teacherId,
                                           subject: _controllerSubject.text,
@@ -292,29 +398,26 @@ class _ComposeDairyNotesState extends State<ComposeDairyNotes> {
           : "DairyNote submission failed"),
       duration: Duration(seconds: 2),
     ));
-    if(response){
-      Future.delayed(Duration(seconds: 2),(){
-        if (mounted){
+    if (response) {
+      Future.delayed(Duration(seconds: 2), () {
+        if (mounted) {
           Navigator.of(context).pop();
         }
-
-      } );
+      });
     }
   }
 
- 
-
-    getFilePath() async {
+  getFilePath() async {
     var temp = await FilePicker.getFile(
         type: FileType.custom,
         allowedExtensions: ['jpg', 'png', 'jpeg', 'pdf']);
     if (temp != null) {
       var mime = lookupMimeType(temp.path);
+      
       setState(() {
         _file = temp;
         fileExtension = mime.split('/').last;
       });
-
     }
   }
 }

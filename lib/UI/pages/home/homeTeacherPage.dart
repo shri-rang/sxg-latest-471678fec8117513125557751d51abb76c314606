@@ -92,7 +92,7 @@ class _HomeTeacherPageState extends State<HomeTeacherPage> {
                         actions: <Widget>[
                           FlatButton(
                             onPressed: () => Navigator.pop(context),
-                            child: Text('Go Back'),
+                            child: Text('Close'),
                           )
                         ],
                         title: Center(child: Text(snapshot.data[index].title)),
@@ -175,7 +175,52 @@ class _HomeTeacherPageState extends State<HomeTeacherPage> {
     var userTokendata = Provider.of<UserTokenProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Employee"),
+        title: FutureBuilder<TeacherInfoModel>(
+          future: _netWorkAPiRepository
+              .getTeacherInfoDataModel(widget.teacherInfo[2]),
+          builder: (context, profileData) {
+            if (profileData.hasData) {
+              return Text(profileData.data.name);
+            } else if (profileData.hasError) {
+              return Column(
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    color: Colors.red,
+                    size: 60,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Text('No Record Found'),
+                  )
+                ],
+              );
+              //   [
+
+              // ];
+            } else {
+              return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: SizedBox(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                        ),
+                        width: 30,
+                        height: 30,
+                      ),
+                    ),
+                    // Center(
+                    //   child: const Padding(
+                    //     padding: EdgeInsets.only(top: 16),
+                    //     child: Text('Awaiting result...'),
+                    //   ),
+                    // )
+                  ]);
+            }
+          },
+        ),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
@@ -245,33 +290,39 @@ class _HomeTeacherPageState extends State<HomeTeacherPage> {
                                     teacherId: profileData.teacherId,
                                     // uid: profileData.teacherId,
                                   )));
+                        // if (index == 7)
+                        //   Navigator.of(context).push(MaterialPageRoute(
+                        //       builder: (_) => AddMarks(
+                        //             id: profileData.teacherId,
+                        //           )));
                         if (index == 7)
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => AddMarks(
-                                    id: profileData.teacherId,
-                                  )));
-                        if (index == 8)
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => TeacherLiveClasses(
                                     id: profileData.teacherId,
                                   )));
-                        if (index == 9)
+                        // if (index == 9)
                         // Navigator.of(context).push(MaterialPageRoute(
                         //     builder: (_) => SalarySlip(
                         //           id: profileData.teacherId,
                         //         )));
 
-                        if (index == 10)
+                        // if (index == 10)
                         // Navigator.of(context).push(MaterialPageRoute(
                         // builder: (_) =>
                         //     TimeTable(id: profileData.teacherId)));
-                        if (index == 11)
+                        if (index == 8)
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => ChangePassWord(
                                     phoneNumber: profileData.phone,
                                     isTeacher: true,
                                   )));
-                        if (index == 12)
+                        // print(profileData.phone);
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //     builder: (_) => ChangePassWord(
+                        //           phoneNumber: profileData.phone,
+                        //           isTeacher: true,
+                        //         )));
+                        if (index == 9)
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => CustomerCare(
                                     phoneNumber: "918310361527",

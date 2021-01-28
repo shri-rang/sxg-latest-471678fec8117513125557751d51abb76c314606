@@ -22,26 +22,18 @@ import 'package:simple_x_genius/model/assignmentlist.dart';
 import 'uploadassignment.dart';
 import 'package:simple_x_genius/model/stuentInfoModel.dart';
 // import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:path/path.dart' as p;
+import 'package:mime/mime.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:dio/dio.dart';
 
 class UploadAssignment extends StatefulWidget {
   ViewAssignmentModel assignment;
   final StudentInfoModel studentInfoModel;
   UploadAssignment({this.assignment, this.studentInfoModel});
-  //   final String messageId;
-  // final viewType;
-  // final String readStatus;
-  // final bool isTeacher;
-  // final String uid;
-  // final CircularStudentModel circularStudentModel;
 
-  // const StudentCircularDetails(
-  //     {Key key,
-  //     @required this.messageId,
-  //     @required this.uid,
-  //     @required this.isTeacher,
-  //     this.viewType,
-  //     @required this.readStatus,
-  //     this.circularStudentModel})
   @override
   _UploadAssignmentState createState() => _UploadAssignmentState();
 }
@@ -49,25 +41,194 @@ class UploadAssignment extends StatefulWidget {
 class _UploadAssignmentState extends State<UploadAssignment> {
   // RefreshController _refreshController =
   //     RefreshController(initialRefresh: false);
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   NetWorkAPiRepository _netWorkAPiRepository;
   StudentUploadProvider _studentUploadProvider = StudentUploadProvider();
   String attachMentExtension;
   String _localPath;
   final TextEditingController _controllerText = TextEditingController();
 
-  void _showDialog() {
-    // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Max upload 20 MB"),
-        );
-      },
+  final picker = ImagePicker();
+  File _file;
+  String imageExtension;
+  // String fileExtension;
+  String _image;
+  var uploading = "intializing";
+  bool _isUploading = false;
+  // final imgUrl = "https://unsplash.com/photos/iEJVyyevw-U/download?force=true";
+  bool downloading = false;
+  var progressString = "";
+  double _percentage = 0;
+  // Future<void> downloadFile() async {
+  //   Dio dio = Dio();
+
+  //   try {
+  //     var dir = await getApplicationDocumentsDirectory();
+
+  //     await dio.download(imgUrl, "${dir.path}/myimage.jpg",
+  //         onReceiveProgress: (rec, total) {
+  //       print("Rec: $rec , Total: $total");
+
+  //       setState(() {
+  //         downloading = true;
+  //         progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
+  //       });
+  //     });
+  //   } catch (e) {}
+  //   setState(() {
+  //     downloading = false;
+  //     progressString = "Completed";
+  //   });
+  //   print("Download completed");
+  // }
+  Future uploadAssingment({
+    String assignmentId,
+    String studentId,
+    File uploadedFile,
+    String fileName,
+    String uploadMessage,
+    // String fileExtension
+  }) async {
+    Dio dio = Dio();
+    print(uploadedFile);
+    print(fileName);
+    // print(fileExtension);
+    final String url =
+        "https://www.edwardses.net/edwardswebservice/Post_assignmentreply.php";
+
+    FormData formData = FormData();
+    // var request = http.MultipartRequest('POST', Uri.parse(url));
+    // request.fields["assignmentID"] = assignmentId;
+    // request.fields["studentID"] = studentId;
+
+    formData.files.add(MapEntry(
+        "uploaded_file",
+        await MultipartFile.fromFile(
+          uploadedFile.path,
+          filename: fileName,
+          // contentType: MediaType(
+          //     // fileExtension == "pdf" ? 'application' : 'image',
+          //     // fileExtension
+          //     )
+        )));
+
+    formData.fields.add(
+      MapEntry("assignmentID", assignmentId),
     );
+    formData.fields.add(
+      MapEntry("studentID", studentId),
+    );
+    var progress;
+    try {
+      var response = await dio.post(url,
+          //     onSendProgress: (actualbytes, totalbytes) {
+          //   uploadMessage = actualbytes.toString();
+          // },
+
+          onSendProgress: (int sent, int total) {
+        // progress = sent / total;
+        print('progress: $progress ($sent/$total)');
+        var percentage = (sent / total) * 100;
+        // _percentage = percentage / 100;
+        if (percentage < 100) {
+          setState(() {
+            _percentage = percentage / 100;
+            downloading = true;
+            progressString = percentage.toStringAsFixed(0) + "%";
+          });
+        } else {}
+        setState(() {
+          progressString = ' Uploading Successful';
+        });
+      },
+          data: formData,
+          options: Options(
+              method: 'POST',
+              headers: {"Content-Type": "multipart/form-data"}));
+      //  await request.send();
+      print(response.data);
+
+      // return response.data;
+      // return response.data;
+    } on DioError catch (e) {}
+    setState(() {
+      downloading = false;
+      progressString = "Completed";
+    });
+    print("Download completed");
   }
+
+  Future getImagez() async {
+    PickedFile image = await picker.getImage(source: ImageSource.camera);
+
+    if (image != null) {
+      var mime = lookupMimeType(image.path);
+      File file = File(image.path);
+      print('nonCom:${file.lengthSync()}');
+      final filePath = file.absolute.path;
+      //   // Create output file path
+      //   // eg:- "Volume/VM/abcd_out.jpeg"
+      final lastIndex = filePath.lastIndexOf(new RegExp(r'.jp'));
+      final splitted = filePath.substring(0, (lastIndex));
+      final outPath = "${splitted}_out${filePath.substring(lastIndex)}";
+      var result = await FlutterImageCompress.compressAndGetFile(
+        image.path,
+        outPath,
+        // outPath,
+        quality: 15,
+      );
+      setState(() {
+        _file = File(result.path);
+        _image = image.path.split('/').last;
+        // print('nonCom:${file.lengthSync()}');
+        print('comp: ${_file.lengthSync()}');
+        // imageExtension = mime.split('/').last;
+      });
+    }
+  }
+
+  // Future<File> compressFile(File _file) async {
+  //   final filePath = _file.absolute.path;
+
+  //   // Create output file path
+  //   // eg:- "Volume/VM/abcd_out.jpeg"
+  //   final lastIndex = filePath.lastIndexOf(new RegExp(r'.jp'));
+  //   final splitted = filePath.substring(0, (lastIndex));
+  //   final outPath = "${splitted}_out${filePath.substring(lastIndex)}";
+  //   var result = await FlutterImageCompress.compressAndGetFile(
+  //     _file.absolute.path,
+  //     outPath,
+  //     quality: 5,
+  //   );
+
+  //   print('lenth:${_file.lengthSync()}');
+  //   print(result.lengthSync());
+
+  //   return result;
+  // }
+
+  // void _showDialog() {
+  //   // flutter defined function
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       // return object of type Dialog
+  //       return AlertDialog(
+  //         title: new Text("Max upload 20 MB"),
+  //       );
+  //     },
+  //   );
+  // }
+
+  // void _showSnackbarMessage(bool response) {
+  //   _scaffoldKey.currentState.showSnackBar(SnackBar(
+  //     backgroundColor: response ? greenColor : redColor,
+  //     content: Text(response
+  //         ? "Assignment Uploaded Succecfully"
+  //         : "Assignment Upload failed"),
+  //     duration: Duration(seconds: 2),
+  //   ));
+  // }
 
   var assignment;
   // PDFDocument document;
@@ -80,8 +241,19 @@ class _UploadAssignmentState extends State<UploadAssignment> {
 
   Future<void> _getData() async {
     setState(() {
-      _netWorkAPiRepository.listingAssignment(widget.assignment.assignmentId);
+      _netWorkAPiRepository.listingAssignment(
+        studentId: widget.studentInfoModel.studenId,
+        assignmentId: widget.assignment.assignmentId,
+      );
     });
+  }
+
+  upload(var result) {
+    if (result != null) {
+      setState(() {
+        uploading = "uploded ";
+      });
+    }
   }
 
   // @override
@@ -102,30 +274,176 @@ class _UploadAssignmentState extends State<UploadAssignment> {
   // }
   @override
   Widget build(BuildContext context) {
+    _showBottomsheet() {
+      showBottomSheet(
+          context: context,
+          builder: (context) => Container(
+                color: Colors.pink,
+                height: 250,
+                width: double.infinity,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    Container(
+                      child: Text(
+                        "Assignment",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    RaisedButton.icon(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.blue)),
+                        label: Text(
+                          'Take Image From Camera',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        icon: Icon(
+                          Icons.camera_alt,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          getImagez();
+                        },
+                        color: Colors.blue),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    RaisedButton.icon(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.blue)),
+                        label: Text(
+                          'Click to Upload Image',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        icon: Icon(
+                          Icons.file_upload,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          uploadAssingment(
+                            assignmentId: widget.assignment.assignmentId,
+                            studentId: widget.studentInfoModel.studenId,
+                            uploadedFile: _file,
+                            fileName: _image,
+                          );
+                        },
+                        color: Colors.blue),
+                    // ],
+                    // ),
+                    SizedBox(
+                      height: 40.0,
+                    ),
+                    FlatButton.icon(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.white)),
+                      label: Text(
+                        'close',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      icon: Icon(
+                        Icons.close,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                ),
+              ));
+    }
+
     return Scaffold(
+      // key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Upload Assignment'),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-          label: Text('Upload'),
-          icon: Icon(Icons.file_upload),
-          backgroundColor: Colors.pink,
-          onPressed: () async {
-            var somefile = await FilePicker.getFile();
-            int filesize = somefile.lengthSync();
-            double sizeMb = filesize / (1024 * 1024);
-            if (sizeMb > 20) {
-              return _showDialog();
-            } else {
-              await _studentUploadProvider.uploadAssignmentFile(
-                  // print(widget.assignment.assignmentId),
-                  assignmentId: widget.assignment.assignmentId,
-                  studentId: widget.studentInfoModel.studenId,
-                  uploadedFile: somefile);
-            }
-          }),
+
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          // FloatingActionButton.extended(
+          //     heroTag: null,
+          //     label: Text(
+          //       'Upload',
+          //       style: TextStyle(fontSize: 12),
+          //     ),
+          //     icon: Icon(Icons.file_upload),
+          //     backgroundColor: Colors.pink,
+          //     onPressed: () async {
+          //       // downloadFile();
+          //       uploadAssingment(
+          //         assignmentId: widget.assignment.assignmentId,
+          //         studentId: widget.studentInfoModel.studenId,
+          //         uploadedFile: _file,
+          //         fileName: _image,
+          //       );
+          //       // var result;
+          //       // result = await _studentUploadProvider.uploadAssignmentFile(
+          //       //   // print(widget.assignment.assignmentId),
+          //       //   assignmentId: widget.assignment.assignmentId,
+          //       //   studentId: widget.studentInfoModel.studenId,
+          //       //   uploadedFile: _file,
+          //       //   fileName: _image,
+
+          //       //   uploadMessage: uploading,
+          //       //   // fileExtention: imageExtension,
+          //       // );
+          //       // print('this is result: $result');
+          //       // upload(result);
+          //       // var somefile = await FilePicker.getFile();
+          //       // int filesize = somefile.lengthSync();
+          //       // double sizeMb = filesize / (1024 * 1024);
+          //       // if (sizeMb > 20) {
+          //       //   return _showDialog();
+          //       // } else {
+          //       //   await _studentUploadProvider.uploadAssignmentFile(
+          //       //       // print(widget.assignment.assignmentId),
+          //       //       assignmentId: widget.assignment.assignmentId,
+          //       //       studentId: widget.studentInfoModel.studenId,
+          //       //       uploadedFile: somefile);
+          //     }),
+          // SizedBox(
+          //   height: 4,
+          // ),
+
+          FloatingActionButton.extended(
+              heroTag: null,
+              label: Text(
+                'Upload',
+                style: TextStyle(fontSize: 12),
+              ),
+              icon: Icon(Icons.upload_sharp),
+              backgroundColor: Colors.pink,
+              onPressed: () async {
+                // getImagez();
+                _showBottomsheet();
+                //   _scaffoldKey.currentState.showBottomSheet(
+                //       // context: context,
+                //       // builder:
+                //       (context) =>
+
+                //   // _showSnackbarMessage(result);
+              }),
+        ],
+      ),
 
       body: Container(
+        // height: 800,
         child: Column(children: [
           Container(
               width: double.infinity,
@@ -153,6 +471,24 @@ class _UploadAssignmentState extends State<UploadAssignment> {
                         // SizedBox(
                         //   height: 4.0,
                         // ),
+                        // Text(uploading ?? ''),
+                        // Text(_image.path),
+                        // Text(imageExtension),
+                        // RaisedButton(
+                        //   onPressed: () async {
+                        //     await _studentUploadProvider.uploadAssignmentFile(
+                        //       // print(widget.assignment.assignmentId),
+                        //       assignmentId: widget.assignment.assignmentId,
+                        //       studentId: widget.studentInfoModel.studenId,
+                        //       uploadedFile: _file,
+                        //       fileName: _image,
+                        //       // fileExtention: imageExtension,
+                        //     );
+                        //   },
+                        // ),
+
+                        // Image.file(_image),
+                        // Text(),
                         Text("Title: " + widget.assignment.title),
                         SizedBox(
                           height: 4.0,
@@ -282,16 +618,105 @@ class _UploadAssignmentState extends State<UploadAssignment> {
             // mainAxisAlignment: MainAxisAlignment.end,
             // crossAxisAlignment: CrossAxisAlignment.end,
             children: [
+              Card(
+                child: Container(
+                  height: 105,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: blackColor),
+                            borderRadius: BorderRadius.circular(10),
+                            // shape:
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                            child: InkWell(
+                              child: Row(
+                                // mainAxisAlignment: MainAxisAlignment.center
+                                // crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.file_upload,
+                                    color: blackColor,
+                                  ),
+                                  SizedBox(width: 8.0),
+                                  Expanded(
+                                    child: Text(
+                                      _file != null
+                                          ? p.basename(_file.path)
+                                          // : _image != null
+                                          // ? p.basename(_image.path)
+                                          : "Upload an assignment",
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              // onTap: getFilePath,
+                            ),
+                          ),
+                        ),
+                      ),
+                      downloading
+                          ? Container(
+                              // height: 100.0,
+                              // width: 200.0,
+                              child: Card(
+                                // color: Colors.black,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    // CircularProgressIndicator(),
+                                    // SizedBox(
+                                    //   height: 20.0,
+                                    // ),
+                                    Text(
+                                      "Uploading File: $progressString",
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    LinearProgressIndicator(
+                                      // minHeight: 20,
+                                      value: _percentage,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          : Text(
+                              "No Data",
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                    ],
+                  ),
+                ),
+              ),
               Container(
-                  height: 430,
+                  height: 415,
                   width: 200,
                   child: FutureBuilder<List<AssignmentList>>(
-                      future: _netWorkAPiRepository
-                          .listingAssignment(widget.assignment.assignmentId
-                              // widget.studentInfoModel.classesID,
-                              // widget.studentInfoModel.sectionID
-                              // widget.studentInfoModel.studenId,
-                              ),
+                      future: _netWorkAPiRepository.listingAssignment(
+                        studentId: widget.studentInfoModel.studenId,
+                        assignmentId: widget.assignment.assignmentId,
+
+                        // widget.studentInfoModel.classesID,
+                        // widget.studentInfoModel.sectionID
+                        // widget.studentInfoModel.studenId,
+                      ),
                       builder: (context,
                           AsyncSnapshot<List<AssignmentList>> snapshot) {
                         // Container(
@@ -305,6 +730,8 @@ class _UploadAssignmentState extends State<UploadAssignment> {
                             },
                             child: ListView.builder(
                               itemCount: snapshot.data.length,
+                              // physics:
+                              // scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
                                 return Container(
                                   child: InkWell(
@@ -340,7 +767,7 @@ class _UploadAssignmentState extends State<UploadAssignment> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 16),
-                                child: Text('Error: ${snapshot.error}'),
+                                child: Text('No Result Found'),
                               )
                             ],
                           );

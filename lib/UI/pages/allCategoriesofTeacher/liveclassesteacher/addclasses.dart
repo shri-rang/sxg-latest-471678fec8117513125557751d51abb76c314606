@@ -16,6 +16,8 @@ import 'package:simple_x_genius/model/classModel.dart';
 import 'package:simple_x_genius/model/sectionModel.dart';
 import 'package:simple_x_genius/utility/validator.dart';
 import 'package:path/path.dart' as p;
+import 'package:simple_x_genius/model/subjectmodel.dart';
+import './date.dart';
 
 class AddClasses extends StatefulWidget {
   final String id;
@@ -34,9 +36,12 @@ class _AddClassesState extends State<AddClasses> {
     _netWorkAPiRepository = NetWorkAPiRepository();
     var data = Provider.of<GetClassSectionProvider>(context, listen: false);
     data.getClassDataModelProvider();
+    // data.getSubjetDataModelProvider();
     joinTime = TimeOfDay.now();
     endTime = TimeOfDay.now();
   }
+
+  //  final dateTime = endTime.applied();
 
   final _formKey = GlobalKey<FormState>();
   TimeOfDay joinTime;
@@ -57,13 +62,18 @@ class _AddClassesState extends State<AddClasses> {
       setState(() {
         selectedDate = picked;
         final String convertedDate =
-            new DateFormat("dd-MM-yyyy").format(selectedDate);
+            new DateFormat("yyyy-MM-d").format(selectedDate);
         _datecontroller.value = TextEditingValue(text: convertedDate);
       });
   }
 
   _joinTime() async {
     TimeOfDay t = await showTimePicker(context: context, initialTime: joinTime);
+    int hour;
+    int minute;
+    // t.replacing(int hour; int minute;  );
+    // t.replacing()
+
     if (t != null)
       setState(() {
         joinTime = t;
@@ -71,7 +81,17 @@ class _AddClassesState extends State<AddClasses> {
   }
 
   _endTime() async {
-    TimeOfDay t = await showTimePicker(context: context, initialTime: endTime);
+    TimeOfDay t = await showTimePicker(
+        context: context,
+        initialTime: endTime,
+        builder: (BuildContext context, Widget child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+            child: child,
+          );
+        });
+
+    // );
     if (t != null)
       setState(() {
         endTime = t;
@@ -80,6 +100,11 @@ class _AddClassesState extends State<AddClasses> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = MaterialLocalizations.of(context);
+    final formattedTimeOfDay =
+        localizations.formatTimeOfDay(joinTime, alwaysUse24HourFormat: true);
+    final formattedEndDate =
+        localizations.formatTimeOfDay(endTime, alwaysUse24HourFormat: true);
     return Scaffold(
         appBar: AppBar(title: Text('Add Classes')),
         body: Consumer<GetClassSectionProvider>(
@@ -119,6 +144,8 @@ class _AddClassesState extends State<AddClasses> {
                             classSectionProvder.studentInfoModels = [];
                             classSectionProvder
                                 .getSectionDataModelProvider(value.classId);
+                            classSectionProvder
+                                .getSubjetDataModelProvider(value.classId);
                           },
                         ),
                         SizedBox(
@@ -157,27 +184,58 @@ class _AddClassesState extends State<AddClasses> {
                         SizedBox(
                           height: 10.0,
                         ),
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: TextFormField(
-                            controller: _subcontroller,
-                            textCapitalization: TextCapitalization.sentences,
-                            // keyboardType: TextIn,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter some text';
-                              }
-                              return null;
-                            },
-
-                            // controller: _namecontroller,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Enter Subject',
-                              hintText: 'Enter subject',
-                            ),
+                        Container(
+                          child: Text(
+                            "Subject",
+                            style: TextStyle(
+                                fontSize: 18.0, fontWeight: FontWeight.bold),
                           ),
                         ),
+                        classSectionProvder.loaderState
+                            ? Container(
+                                child: Container(
+                                    margin: EdgeInsets.only(top: 10.0),
+                                    child: Text("Fetching section...")))
+                            : DropdownButton<SubjectModel>(
+                                hint: Text(classSectionProvder.subjectModel ==
+                                        null
+                                    ? "please select a subject"
+                                    : classSectionProvder.subjectModel.subject),
+                                isExpanded: true,
+                                items: classSectionProvder.subjectModels
+                                    .map((value) {
+                                  return new DropdownMenuItem<SubjectModel>(
+                                    value: value,
+                                    child: new Text(value.subject),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  classSectionProvder.subjectModel = value;
+                                  print(classSectionProvder
+                                      .subjectModel.subjectId);
+                                },
+                              ),
+                        // Padding(
+                        //   padding: EdgeInsets.all(10),
+                        //   child: TextFormField(
+                        //     controller: _subcontroller,
+                        //     textCapitalization: TextCapitalization.sentences,
+                        //     // keyboardType: TextIn,
+                        //     validator: (value) {
+                        //       if (value.isEmpty) {
+                        //         return 'Please enter some text';
+                        //       }
+                        //       return null;
+                        //     },
+
+                        //     // controller: _namecontroller,
+                        //     decoration: InputDecoration(
+                        //       border: OutlineInputBorder(),
+                        //       labelText: 'Enter Subject',
+                        //       hintText: 'Enter subject',
+                        //     ),
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 10.0,
                         ),
@@ -202,7 +260,7 @@ class _AddClassesState extends State<AddClasses> {
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   // labelText: 'Password',
-                                  hintText: 'Class Date',
+                                  hintText: 'Date',
                                   // suffixIcon: ,
                                 ),
                               ),
@@ -238,16 +296,18 @@ class _AddClassesState extends State<AddClasses> {
                             onPressed: () {
                               _netWorkAPiRepository.classesAdd(
                                 date: _datecontroller.text.toString(),
-                                classesId:
-                                    classSectionProvder.classModel.classId,
+                                classes: classSectionProvder.classModel.classId,
                                 sectionId:
                                     classSectionProvder.sectionModel.sectionId,
-                                subject: _subcontroller.text,
-                                jointime: joinTime.toString(),
-                                teacherId: widget.id,
-                                endtime: endTime.toString(),
+                                subject:
+                                    classSectionProvder.subjectModel.subjectId,
+                                jointime: formattedTimeOfDay,
+                                teacherId: widget.id.toString(),
+                                endtime: formattedEndDate,
                                 // print()
                               );
+                              // Navigator.canPop(context);
+                              Navigator.of(context).pop();
                               // _launchURL();
                             },
                             shape: RoundedRectangleBorder(
@@ -255,7 +315,15 @@ class _AddClassesState extends State<AddClasses> {
                               // side: BorderSide(color: Colors.red)
                             ),
                           ),
-                        )
+                        ),
+                        // Text(endTime.toString()),
+                        // RaisedButton(
+                        //   onPressed: () {
+                        //     print(formattedTimeOfDay);
+
+                        //     // print(endTime.format(context));
+                        //   },
+                        // )
                       ]))));
         }));
   }

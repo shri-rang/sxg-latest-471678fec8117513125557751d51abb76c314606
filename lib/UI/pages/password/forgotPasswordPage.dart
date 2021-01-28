@@ -160,18 +160,18 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   }
 
   void _showSnackbarMessage(bool response, message) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: response? greenColor : redColor,
-          content: Text(message),
-          duration: Duration(seconds: 2),
-        )
-      );
-    // _scaffoldKey.currentState.showSnackBar(SnackBar(
-    //   backgroundColor: response ? greenColor : redColor,
-    //   content: Text(message),
-    //   duration: Duration(seconds: 2),
-    // ));
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     backgroundColor: response? greenColor : redColor,
+      //     content: Text(message),
+      //     duration: Duration(seconds: 2),
+      //   )
+      // );
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      backgroundColor: response ? greenColor : redColor,
+      content: Text(message),
+      duration: Duration(seconds: 2),
+    ));
   }
 
   void setLoaderState(bool state) {

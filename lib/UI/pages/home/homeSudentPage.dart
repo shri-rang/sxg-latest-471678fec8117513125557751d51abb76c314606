@@ -72,7 +72,7 @@ class _HomeSudentPageState extends State<HomeSudentPage> {
                         actions: <Widget>[
                           FlatButton(
                             onPressed: () => Navigator.pop(context),
-                            child: Text('Go Back'),
+                            child: Text('Close'),
                           )
                         ],
                         title: Center(child: Text(snapshot.data[index].title)),
@@ -156,8 +156,7 @@ class _HomeSudentPageState extends State<HomeSudentPage> {
 
     return Scaffold(
       body: FutureBuilderWidget<List<StudentInfoModel>>(
-          future:
-              _netWorkAPiRepository.getStudentDataRepo(widget.studentInfo[2]),
+          future: _netWorkAPiRepository.studentDataLogin(widget.studentInfo[0]),
           builder: (context, snapshot) {
             if (snapshot == null)
               return Center(

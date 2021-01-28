@@ -9,7 +9,7 @@ class ContactScreen extends StatefulWidget {
 
 class _ContactScreenState extends State<ContactScreen> {
   _launchCaller() async {
-    const url = "tel:+918910211212";
+    const url = "tel:+919934358179";
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -18,7 +18,7 @@ class _ContactScreenState extends State<ContactScreen> {
   }
 
   _lunchCaller() async {
-    const url = "tel:+919934358179";
+    const url = "tel:+918292540597";
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -53,26 +53,32 @@ class _ContactScreenState extends State<ContactScreen> {
               Container(
                   padding: EdgeInsets.all(15),
                   child: Text(
-                    'Please do always mention Student Name,\n Class & Section while sending the messages..',
+                    'Please do always mention Student Name,\nClass & Section while sending the messages..',
+                    style: TextStyle(fontSize: 16),
+                  )),
+              Container(
+                  padding: EdgeInsets.all(15),
+                  child: Text(
+                    'Contact Time : 8 AM to 12.30 PM ',
                     style: TextStyle(fontSize: 16),
                   )),
               RaisedButton.icon(
                   //  color: Colors.amberAccent,
                   onPressed: _launchCaller,
                   icon: Icon(Icons.phone),
-                  label: Text('+918910211212'))
+                  label: Text('+919934358179'))
             ]),
             Column(children: [
               Container(
                   padding: EdgeInsets.all(15),
                   child: Text(
-                    'Contact for School Fees.',
+                    'Contact Time : 8 AM to 12.30 PM ',
                     style: TextStyle(fontSize: 16),
                   )),
               RaisedButton.icon(
                   onPressed: _lunchCaller,
                   icon: Icon(Icons.phone),
-                  label: Text('+919934358179'))
+                  label: Text('+918292540597'))
             ]),
             Column(children: [
               Container(

@@ -62,16 +62,19 @@ class ReplyMessage {
   String status;
   String parentId;
   String fileURL;
+  String name;
 
-  ReplyMessage(
-      {this.replyId,
-      this.messageID,
-      this.title,
-      this.creationTime,
-      this.parentId,
-      this.replyMessage,
-      this.status,
-      this.fileURL});
+  ReplyMessage({
+    this.replyId,
+    this.messageID,
+    this.title,
+    this.creationTime,
+    this.parentId,
+    this.replyMessage,
+    this.status,
+    this.fileURL,
+    this.name,
+  });
   ReplyMessage.fromJson(Map<String, dynamic> json) {
     replyId = json['replyID'] ?? "";
     messageID = json['messageID'] ?? "";
@@ -81,5 +84,6 @@ class ReplyMessage {
     creationTime = json['create_time'] ?? "";
     fileURL = json['photo'] ?? "";
     parentId = json['parentID'] ?? "";
+    name = json['name'] ?? "";
   }
 }

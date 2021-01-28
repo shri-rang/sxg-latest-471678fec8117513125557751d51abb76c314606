@@ -17,6 +17,7 @@ import 'package:simple_x_genius/model/liveclasses.dart';
 // import 'package:simple_x_genius/model/feesInvoiceInfoModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:simple_x_genius/model/subjectmodel.dart';
 
 class NetWorkAPiRepository {
   NetworkApiClient _networkApiClient;
@@ -145,13 +146,28 @@ class NetWorkAPiRepository {
     }
   }
 
+  Future<ParensInfoModel> getStParentInfoRepo(String parentId) async {
+    try {
+      var response =
+          await _networkApiClient.getStParentInfoFromServer(parentId);
+
+      var data = ParensInfoModel.fromMap(response["SXG"]["parent data"][0]);
+
+      return data;
+    } catch (error) {
+      throw Exception('Failed to load ');
+    }
+  }
+
   Future<TeacherInfoModel> getTeacherInfoDataModel(String teacherId) async {
     var response = await _networkApiClient.getTeacherInfoFromServer(teacherId);
     if (response == null)
       return null;
     else if (response["SXG"]["STATUS"]["STATUS"] == "1") {
       var data = TeacherInfoModel.fromJson(response["SXG"]['teachers data'][0]);
+      // var additionaData = AdditionalInfoData.fromJson(response['SXG']['additional teachers data'][1]);
       return data;
+      // return additionaData;
     } else {
       return null;
     }
@@ -205,6 +221,21 @@ class NetWorkAPiRepository {
       data.forEach(
           (element) => {sectionModels.add(SectionModel.fromJson(element))});
       return sectionModels;
+    } else {
+      return [];
+    }
+  }
+
+  Future<List<SubjectModel>> getSubjectDataModel(String classId) async {
+    List<SubjectModel> subjectModels = [];
+    var response = await _networkApiClient.getSubjectFromServer(classId);
+
+    if (response["SXG"]["STATUS"]["STATUS"] == "1") {
+      var data = response["SXG"]["subject data"] as List;
+
+      data.forEach(
+          (element) => {subjectModels.add(SubjectModel.fromJson(element))});
+      return subjectModels;
     } else {
       return [];
     }
@@ -479,9 +510,11 @@ class NetWorkAPiRepository {
     }
   }
 
-  Future<List<AssignmentList>> listingAssignment(String assignmentId) async {
+  Future<List<AssignmentList>> listingAssignment(
+      {String assignmentId, String studentId}) async {
     List<AssignmentList> assignmentList = [];
-    var response = await _networkApiClient.assignmentListing(assignmentId);
+    var response = await _networkApiClient.assignmentListing(
+        assignmentId: assignmentId, studentId: studentId);
     if (response["SXG"]["STATUS"]["STATUS"] == "1") {
       var data = response["SXG"]["assignment"] as List;
       data.forEach(
@@ -616,8 +649,8 @@ class NetWorkAPiRepository {
     print(teacherId);
     print(meetingId);
     if (response["SXG"]["STATUS"]["STATUS"] == "1") {
-      var data = response["SXG"]["update"] as List;
-
+      var data = response["SXG"]["update"];
+      print(data);
       return data;
     } else {
       return response;
@@ -626,21 +659,21 @@ class NetWorkAPiRepository {
 
   classesAdd(
       {String date,
-      String classesId,
+      String classes,
       String sectionId,
       String subject,
       String jointime,
       String teacherId,
-      String meetingId,
+      // String meetingId,
       String endtime}) async {
     var response = await _networkApiClient.addClasses(
       date: date,
-      classesId: classesId,
+      classes: classes,
       sectionId: sectionId,
       subject: subject,
       jointime: jointime,
       teacherId: teacherId,
-      meetingId: meetingId,
+      // meetingId: meetingId,
       endtime: endtime,
     );
     if (response["SXG"]["STATUS"]["STATUS"] == "1") {
@@ -650,6 +683,41 @@ class NetWorkAPiRepository {
       return data;
     } else {
       return response;
+    }
+  }
+
+  Future<List<StudentInfoModel>> studentDataLogin(String studentId) async {
+    var response = await _networkApiClient.studentData(studentId);
+    List<StudentInfoModel> infoModel = [];
+
+    if (response["SXG"]["STATUS"]["STATUS"] == "1") {
+      var data = response["SXG"]["student data"] as List;
+
+      data.forEach(
+          (element) => {infoModel.add(StudentInfoModel.fromMap(element))});
+
+      return infoModel;
+    } else {
+      throw Exception('Failed to load ');
+    }
+  }
+
+  Future<List<StudentAssignmentList>> studentSentAssignmentToTeacher(
+      {String studentId, String assignmentId}) async {
+    var response = await _networkApiClient.studentAssigntSentToTeacher(
+        studentId: studentId, assignmentId: assignmentId);
+
+    List<StudentAssignmentList> assignmentList = [];
+
+    if (response["SXG"]["STATUS"]["STATUS"] == "1") {
+      var data = response["SXG"]["assignment"] as List;
+
+      data.forEach((element) =>
+          {assignmentList.add(StudentAssignmentList.fromJson(element))});
+      // print(assignmentList);
+      return assignmentList;
+    } else {
+      throw Exception('Failed to load ');
     }
   }
 

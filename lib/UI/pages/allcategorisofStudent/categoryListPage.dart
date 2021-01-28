@@ -52,6 +52,15 @@ class _CategoryListPageState extends State<CategoryListPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // height: 500,
+      // child:
+      //  Center(
+      //   child: RaisedButton(
+      //     onPressed: () {
+      //       print(widget.studentInfoModel.parentId);
+      //     },
+      //   ),
+      // ),
       child: GridView.builder(
         gridDelegate:
             SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
@@ -65,8 +74,11 @@ class _CategoryListPageState extends State<CategoryListPage> {
                           studentInfoModel: widget.studentInfoModel,
                         )));
               if (index == 1)
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => ParentDetailsPage()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => ParentDetailsPage(
+                          studentInfoModel: widget.studentInfoModel,
+                          id: widget.id,
+                        )));
 
               if (index == 2)
                 Navigator.of(context)
@@ -123,20 +135,25 @@ class _CategoryListPageState extends State<CategoryListPage> {
                           studentInfoModel: widget.studentInfoModel,
                           // id: widget.id,
                         )));
-
-              if (index == 13)
+              if (index == 9)
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => FeesInvoice(
+                          // studentInfoModel: widget.studentInfoModel,
+                          id: widget.id,
+                        )));
+              if (index == 10)
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => ChangePassWord(
                           phoneNumber: widget.phone,
                           isTeacher: false,
                         )));
-              if (index == 14)
+              if (index == 11)
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => CustomerCare(
                           phoneNumber: "917992239925",
                           isTeacher: false,
                         )));
-              if (index == 15)
+              if (index == 12)
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => ContactScreen(
                         // phoneNumber: "917992239925",

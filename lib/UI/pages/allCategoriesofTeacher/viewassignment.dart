@@ -69,6 +69,16 @@ class _ViewAssignmentState extends State<ViewAssignment> {
                           height: 15,
                         ),
                         Text(
+                          'Classes: ${snapshot.data[index].classes}-${snapshot.data[index].section}',
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
                           'Title: ${snapshot.data[index].title}',
                           style: TextStyle(
                               fontSize: 15,
@@ -86,39 +96,21 @@ class _ViewAssignmentState extends State<ViewAssignment> {
                               fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
+                          height: 6,
+                        ),
+                        Text(
+                          'Date and Time: ${snapshot.data[index].date}',
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
                           height: 10,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // Container(
-                            //   height: 40,
-                            //   child: Padding(
-                            //     padding: const EdgeInsets.all(8.0),
-                            //     child: RaisedButton(
-                            //       color: Colors.blue,
-                            //       child: Padding(
-                            //         padding: const EdgeInsets.all(3.0),
-                            //         child: Text(
-                            //           'Download',
-                            //           style: TextStyle(
-                            //             color: Colors.white,
-                            //             //  fontSize: 20
-                            //           ),
-                            //         ),
-                            //       ),
-                            //       shape: RoundedRectangleBorder(
-                            //         borderRadius: BorderRadius.circular(25.0),
-                            //         // side: BorderSide(color: Colors.red)
-                            //       ),
-                            //       onPressed: () {
-                            //         // Navigator.of(context).push(MaterialPageRoute(
-                            //         //   builder: (context) => AddQuestions(),
-                            //         // ));
-                            //       },
-                            //     ),
-                            //   ),
-                            // ),
                             Container(
                               height: 40,
                               child: Padding(

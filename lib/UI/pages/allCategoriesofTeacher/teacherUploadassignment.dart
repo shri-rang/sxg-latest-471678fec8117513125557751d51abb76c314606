@@ -19,6 +19,9 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:simple_x_genius/model/viewassignmentModel.dart';
 import 'package:simple_x_genius/model/assignmentlist.dart';
+import 'assignmentlist.dart';
+import 'assignmentlist.dart';
+import 'package:simple_x_genius/UI/pages/allCategoriesofTeacher/assignmentlist.dart';
 // import 'uploadassignment.dart';
 import 'package:simple_x_genius/model/stuentInfoModel.dart';
 // import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -28,23 +31,6 @@ class TeacherUploadAssignment extends StatefulWidget {
   String teacherId;
   TeacherUploadAssignment({this.teacherId, this.assignment});
 
-  // final StudentInfoModel studentInfoModel;
-  // TeacherUploadAssignment({this.assignment, this.studentInfoModel});
-  //   final String messageId;
-  // final viewType;
-  // final String readStatus;
-  // final bool isTeacher;
-  // final String uid;
-  // final CircularStudentModel circularStudentModel;
-
-  // const StudentCircularDetails(
-  //     {Key key,
-  //     @required this.messageId,
-  //     @required this.uid,
-  //     @required this.isTeacher,
-  //     this.viewType,
-  //     @required this.readStatus,
-  //     this.circularStudentModel})
   @override
   _TeacherUploadAssignmentState createState() =>
       _TeacherUploadAssignmentState();
@@ -84,7 +70,8 @@ class _TeacherUploadAssignmentState extends State<TeacherUploadAssignment> {
 
   Future<void> _getData() async {
     setState(() {
-      _netWorkAPiRepository.listingAssignment(widget.assignment.assignmentId);
+      _netWorkAPiRepository.listingAssignment(
+          assignmentId: widget.assignment.assignmentId);
     });
   }
 
@@ -110,25 +97,6 @@ class _TeacherUploadAssignmentState extends State<TeacherUploadAssignment> {
         appBar: AppBar(
           title: Text('Upload Assignment'),
         ),
-        // floatingActionButton: FloatingActionButton.extended(
-        //     label: Text('Upload'),
-        //     icon: Icon(Icons.file_upload),
-        //     backgroundColor: Colors.pink,
-        //     onPressed: () async {
-        //       var somefile = await FilePicker.getFile();
-        //       int filesize = somefile.lengthSync();
-        //       double sizeMb = filesize / (1024 * 1024);
-        //       if (sizeMb > 20) {
-        //         return _showDialog();
-        //       } else {
-        //         await _studentUploadProvider.uploadAssignmentFile(
-        //             // print(widget.assignment.assignmentId),
-        //             assignmentId: widget.assignment.assignmentId,
-        //             studentId: widget.studentInfoModel.studenId,
-        //             uploadedFile: somefile);
-        //       }
-        //     }),
-
         body: Container(
             child: Column(children: [
           Container(
@@ -157,9 +125,18 @@ class _TeacherUploadAssignmentState extends State<TeacherUploadAssignment> {
                         // SizedBox(
                         //   height: 4.0,
                         // ),
+                        // Text("Name: " + widget.assignment.name),
+                        Text("Classes: " + widget.assignment.classes),
+                        Text(
+                          "Section:" + widget.assignment.section,
+                          // style: TextStyle(
+                          //     fontSize: 14,
+                          //     color: Colors.white,
+                          //     fontWeight: FontWeight.bold),
+                        ),
                         Text("Title: " + widget.assignment.title),
                         SizedBox(
-                          height: 4.0,
+                          height: 2.0,
                         ),
                         SelectableLinkify(
                             text: "Message: " + widget.assignment.message,
@@ -178,9 +155,11 @@ class _TeacherUploadAssignmentState extends State<TeacherUploadAssignment> {
                             }),
 
                         SizedBox(
-                          height: 4.0,
+                          height: 2.0,
                         ),
-
+                        Text(
+                          'Date and Time:' + widget.assignment.date,
+                        ),
                         // Container(
 
                         // child:Text(changePDF)
@@ -222,61 +201,9 @@ class _TeacherUploadAssignmentState extends State<TeacherUploadAssignment> {
                         //   width: 400,
                         // )),
                         // Text("Attachment: "),
-                        SizedBox(
-                          height: 8.0,
-                        ),
-
-                        // widget.assignment.docFile.isNotEmpty &&
-                        //         widget.assignment.docFile != "" &&
-                        //         widget.assignment.docFile !=
-                        //             "https://edwardses.net/uploads/attach/"
-                        //     ? Container(
-                        //         decoration: BoxDecoration(
-                        //             border: Border.all(color: blackColor)),
-                        //         child: Padding(
-                        //           padding: const EdgeInsets.all(4.0),
-                        //           child: InkWell(
-                        //             child: Wrap(
-                        //               crossAxisAlignment:
-                        //                   WrapCrossAlignment.end,
-                        //               children: <Widget>[
-                        //                 Icon(Icons.attachment),
-                        //                 Text("Download attachment")
-                        //               ],
-                        //             ),
-                        //             onTap: () async {
-                        //               //  print(attachFileName);
-                        //               //  print(fs);
-                        //               // print(filesize);
-                        //               // Future changePDF() async {
-                        //               //   // var file = widget.circularStudentModel.attachFileName;
-                        //               //   document =
-                        //               //       await PDFDocument.fromURL("$attachFileName");
-                        //               //   // setState(() => _isLoading = true);
-                        //               // }
-
-                        //               // changePDF();
-                        //               // PDFViewer(
-                        //               //   document: document,
-                        //               //   zoomSteps: 1,
-                        //               // );
-                        //               // print(attachFileName);
-
-                        //               if (await Permission.storage
-                        //                   .request()
-                        //                   .isGranted) {
-                        //                 _requestDownload(
-                        //                     widget.assignment.docFile);
-                        //               } else {
-                        //                 openAppSettings();
-                        //               }
-
-                        //               //
-                        //             },
-                        //           ),
-                        //         ),
-                        //       )
-                        //     : Container(),
+                        // SizedBox(
+                        //   height: 2.0,
+                        // ),
                       ],
                     )),
               )),
@@ -287,15 +214,17 @@ class _TeacherUploadAssignmentState extends State<TeacherUploadAssignment> {
               // crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Container(
-                    height: 450,
-                    width: 200,
+                    height: 432,
+                    width:
+                        //  auto,
+                        double.infinity,
                     child: FutureBuilder<List<AssignmentList>>(
-                        future: _netWorkAPiRepository
-                            .listingAssignment(widget.assignment.assignmentId
-                                // widget.studentInfoModel.classesID,
-                                // widget.studentInfoModel.sectionID
-                                // widget.studentInfoModel.studenId,
-                                ),
+                        future: _netWorkAPiRepository.listingAssignment(
+                          assignmentId: widget.assignment.assignmentId,
+                          // widget.studentInfoModel.classesID,
+                          // widget.studentInfoModel.sectionID
+                          // widget.studentInfoModel.studenId,
+                        ),
                         builder: (context,
                             AsyncSnapshot<List<AssignmentList>> snapshot) {
                           // Container(
@@ -312,22 +241,141 @@ class _TeacherUploadAssignmentState extends State<TeacherUploadAssignment> {
                                 itemBuilder: (context, index) {
                                   return Container(
                                     child: InkWell(
-                                      onTap: () {
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (_) => StudentImageViewer(
-                                              attachment:
-                                                  snapshot.data[index].docFile),
-                                        ));
-                                      },
+                                      // onTap: () {
+                                      //   Navigator.of(context)
+                                      //       .push(MaterialPageRoute(
+                                      //     builder: (_) => StudentImageViewer(
+                                      //         // attachment:
+                                      //         //     snapshot.data[index].docFile
+                                      //         ),
+                                      //   ));
+                                      // },
                                       child: Card(
-                                        child: Image.network(
-                                          snapshot.data[index].docFile,
-                                          fit: BoxFit.cover,
-                                          height: 100,
-                                          // width: ,
+                                          child: Container(
+                                        decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [Colors.pink, Colors.red],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.red,
+                                                blurRadius: 12,
+                                                offset: Offset(0, 6),
+                                              )
+                                            ],
+                                            color: Colors.red,
+                                            // border: Border.all(
+                                            //   color: Color.fromRGBO(78, 96, 98, 0.6),
+                                            // ),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(15))),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Container(
+                                                  child: Column(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Text(
+                                                          'Name: ${snapshot.data[index].name}',
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Text(
+                                                          'Roll No: ${snapshot.data[index].roll}',
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Text(
+                                                          'Addmission No: ${snapshot.data[index].admNo}',
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          0, 0, 15, 0),
+                                                  child: Container(
+                                                    height: 100,
+                                                    width: 150,
+                                                    child: Column(
+                                                      children: [
+                                                        InkWell(
+                                                          onTap: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .push(
+                                                                    MaterialPageRoute(
+                                                              builder: (_) => StudentImageViewer(
+                                                                  attachment: snapshot
+                                                                      .data[
+                                                                          index]
+                                                                      .docFile),
+                                                            ));
+                                                          },
+                                                          child: Container(
+                                                            child:
+                                                                Image.network(
+                                                              snapshot
+                                                                  .data[index]
+                                                                  .docFile,
+                                                              fit: BoxFit.cover,
+                                                              height: 100,
+                                                              width: 150,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            // Text(snapshot.data[index].),
+                                          ],
                                         ),
-                                      ),
+                                      )
+
+                                          //  Image.network(
+                                          //   snapshot.data[index].docFile,
+                                          //   fit: BoxFit.cover,
+                                          //   height: 100,
+                                          //   // width: ,
+                                          // ),
+                                          ),
                                     ),
                                     // ),
                                   );
